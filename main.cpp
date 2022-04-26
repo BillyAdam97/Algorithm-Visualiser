@@ -1,5 +1,6 @@
 #include "raylib.h"
 #include "funcs.hpp"
+#include "sortingFuncs.hpp"
 
 int main(void)
 {
@@ -15,10 +16,11 @@ int main(void)
         ClearBackground(WHITE);
         
         //Options
-        DrawText("Pick an Algorithm", 175, 0, 45, BLACK);
-        DrawText("Press 1 for A Star!", 175, 200, 45, BLACK);
-        DrawText("Press 2 for Dijkstras!", 175, 400, 45, BLACK);
-        DrawText("Press 3 for Game of Life!", 175, 600, 45, BLACK);
+        DrawText("Pick an Algorithm", 175, 0, 50, BLACK);
+        DrawText("Press 1 for A Star!", 175, 100, 45, BLACK);
+        DrawText("Press 2 for Dijkstras!", 175, 200, 45, BLACK);
+        DrawText("Press 3 for Game of Life!", 175, 300, 45, BLACK);
+        DrawText("Press 4 for Bubble Sort!", 175, 400, 45, BLACK);
         
         EndDrawing();
         
@@ -30,6 +32,9 @@ int main(void)
         }
         else if (IsKeyPressed(KEY_THREE)) {
             start_gol(width);
+        }
+        else if (IsKeyPressed(KEY_FOUR)) {
+            start_bubble();
         }
 
     }
