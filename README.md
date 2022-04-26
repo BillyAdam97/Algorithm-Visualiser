@@ -5,8 +5,8 @@ Currently implemented:
 - A Star
 - Dijkstras
 - Game of Life
+- Bubble Sort
 
 Future algorithms:
-- Bubble Sort
 - Merge Sort
 - Quick Sort
