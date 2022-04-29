@@ -96,19 +96,28 @@ void Square::updateNeighbours(std::vector<std::vector<std::shared_ptr<Square>>>&
     if (row<total_rows-1 && !grid[row+1][col]->isBarrier()) {
         neigbours.emplace_back(grid[row+1][col]);
     }
+//    if (row<total_rows-1 && col<total_rows-1 && !grid[row+1][col+1]->isBarrier()) {
+//        neigbours.emplace_back(grid[row+1][col+1]);
+//    }
     if (row>0 && !grid[row-1][col]->isBarrier()) {
         neigbours.emplace_back(grid[row-1][col]);
     }
-    
+//    if (row>0 && col>0 && !grid[row-1][col-1]->isBarrier()) {
+//        neigbours.emplace_back(grid[row-1][col-1]);
+//    }
     if (col<total_rows-1 && !grid[row][col+1]->isBarrier()) {
         neigbours.emplace_back(grid[row][col+1]);
     }
-    
+//    if (row<total_rows-1 && col>0 && !grid[row+1][col-1]->isBarrier()) {
+//        neigbours.emplace_back(grid[row+1][col-1]);
+//    }
+//    if (row>0 && col<total_rows-1 && !grid[row-1][col+1]->isBarrier()) {
+//        neigbours.emplace_back(grid[row-1][col+1]);
+//    }
     if (col>0 && !grid[row][col-1]->isBarrier()) {
         neigbours.emplace_back(grid[row][col-1]);
     }
 }
-
 bool Square::operator==(const Square &other) const
 {
     return (x == other.x && y == other.y);

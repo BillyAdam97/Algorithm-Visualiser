@@ -17,10 +17,12 @@ int main(void)
         
         //Options
         DrawText("Pick an Algorithm", 175, 0, 50, BLACK);
-        DrawText("Press 1 for A Star!", 175, 100, 45, BLACK);
-        DrawText("Press 2 for Dijkstras!", 175, 200, 45, BLACK);
-        DrawText("Press 3 for Game of Life!", 175, 300, 45, BLACK);
-        DrawText("Press 4 for Bubble Sort!", 175, 400, 45, BLACK);
+        DrawText("Press 1 for A Star!", 150, 100, 45, BLACK);
+        DrawText("Press 2 for Dijkstras!", 150, 200, 45, BLACK);
+        DrawText("Press 3 for Game of Life!", 150, 300, 45, BLACK);
+        DrawText("Press 4 for Bubble Sort!", 150, 400, 45, BLACK);
+        DrawText("Press 5 for Quick Sort!", 150, 500, 45, BLACK);
+        DrawText("Press 6 for Merge Sort!", 150, 600, 45, BLACK);
         
         EndDrawing();
         
@@ -35,6 +37,12 @@ int main(void)
         }
         else if (IsKeyPressed(KEY_FOUR)) {
             start_bubble();
+        }
+        else if (IsKeyPressed(KEY_FIVE)) {
+            start_quicksort();
+        }
+        else if (IsKeyPressed(KEY_SIX)) {
+            start_merge();
         }
 
     }
