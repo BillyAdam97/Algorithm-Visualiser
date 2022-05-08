@@ -28,9 +28,21 @@ std::vector<std::vector<std::shared_ptr<Square>>> make_grid(int rows, int width)
 void draw_grid(int rows, int width)
 //Draws the grid lines
 {
+//    Vector2 start;
+//    Vector2 end;
     int gap = width/rows;
     for (int i=0; i<rows; i++) {
+//        start.x = 0;
+//        start.y = i*gap;
+//        end.x = width;
+//        end.y = i*gap;
         DrawLine(0, (i*gap), width, (i*gap), GRAY);
+//        DrawLineEx(start, end, 3.0, BLACK);
+//        start.x = i*gap;
+//        start.y = 0;
+//        end.x = i*gap;
+//        end.y = width;
+//        DrawLineEx(start, end, 3.0, BLACK);
         DrawLine((i*gap), 0, (i*gap), width, GRAY);
     }
 }
@@ -49,7 +61,7 @@ void draw(std::vector<std::vector<std::shared_ptr<Square>>>& grid, int rows, int
 }
 
 std::pair<int,int> get_clicked(Vector2 mousepos, int rows, int width) {
-    // Works out which square is clicked.
+//     Works out which square is clicked.
     int gap = width/rows;
     int y = mousepos.y;
     int x = mousepos.x;
@@ -412,7 +424,7 @@ void start_gol(int width) {
     
     int rows = 40;
     std::vector<std::vector<std::shared_ptr<Square>>> grid = make_grid(rows, width);
-    Vector2 mousepos = { -100.0f, -100.0f };
+    Vector2 mousepos = { 00.0f, 00.0f };
     int row;
     int col;
     std::pair<int,int> rowcol;

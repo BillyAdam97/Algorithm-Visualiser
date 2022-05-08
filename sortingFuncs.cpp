@@ -19,11 +19,9 @@ void drawBars(std::vector<std::shared_ptr<Bar>>& alist) {
 
 void bubblesort(std::vector<std::shared_ptr<Bar>>& alist) {
     int temp;
-    int count = (int)alist.size();
     for (int i=0; i<alist.size(); i++) {
         for (int j=0; j<alist.size()-1; j++) {
             if (alist[j]->height>alist[j+1]->height) {
-//                alist[j]->setCurr();
                 temp = alist[j]->x;
                 alist[j]->x = alist[j+1]->x;
                 alist[j+1]->x = temp;
@@ -31,13 +29,9 @@ void bubblesort(std::vector<std::shared_ptr<Bar>>& alist) {
                 BeginDrawing();
                 drawBars(alist);
                 EndDrawing();
-//                alist[j+1]->reset();
             }
             
         }
-//        count--;
-//        alist[count]->setSorted();
-        
     }
 }
 
@@ -92,7 +86,6 @@ int partition(std::vector<std::shared_ptr<Bar>>& alist, int low, int high) {
             drawBars(alist);
             EndDrawing();
         }
-        
     }
     temp = alist[i]->x;
     alist[i]->x = alist[high]->x;
