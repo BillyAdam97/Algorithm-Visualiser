@@ -8,3 +8,4 @@ Currently implemented:
 - Bubble Sort
 - Merge Sort
 - Quick Sort
+- Maze Generator
