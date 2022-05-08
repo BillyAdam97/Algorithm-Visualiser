@@ -6,7 +6,5 @@ Currently implemented:
 - Dijkstras
 - Game of Life
 - Bubble Sort
-
-Future algorithms:
 - Merge Sort
 - Quick Sort
