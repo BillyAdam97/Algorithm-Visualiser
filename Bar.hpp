@@ -2,14 +2,13 @@
 #define Bar_hpp
 #include "raylib.h"
 #include <string>
+#include "Shape.hpp"
 
-class Bar
+class Bar : public Shape
 {
 public:
     int x;
     int y;
-    int row;
-    int col;
     int width;
     int height;
     Color color;
@@ -20,7 +19,7 @@ public:
     bool isCurr();
     void setCurr();
     void reset();
-    void draw();
+    virtual void draw() override;
 };
 
 

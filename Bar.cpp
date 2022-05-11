@@ -2,7 +2,7 @@
 
 
 Bar::Bar(int _row, int _col, int _width, int _height)
-: row{_row}, col{_col}, width{_width}, height{_height}
+: Shape(_row, _col), width{_width}, height{_height}
 {
     x=row*width;
     y=800-height;

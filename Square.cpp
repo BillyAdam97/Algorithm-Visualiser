@@ -2,10 +2,10 @@
 
 
 Square::Square(int _row, int _col, int _width, int _total_rows, int _index)
-:row{_row}, col{_col}, width{_width}, total_rows(_total_rows), index{_index}
+: Shape(_row,_col), width{_width}, total_rows(_total_rows), index{_index}
 {
-    x = row*width;
-    y = col*width;
+    x = _row*width;
+    y = _col*width;
     color = WHITE;
     colortype = "WHITE";
     wall = 0;

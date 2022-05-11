@@ -2,7 +2,7 @@
 
 void removeWalls(std::shared_ptr<Cell>& cell1, std::shared_ptr<Cell>& cell2) {
     
-    int x = cell1->x-cell2->x;
+    int x = cell1->row-cell2->row;
     if (x == 1) {
         cell1->walls[3] = false;
         cell2->walls[1] = false;
@@ -12,7 +12,7 @@ void removeWalls(std::shared_ptr<Cell>& cell1, std::shared_ptr<Cell>& cell2) {
         cell2->walls[3] = false;
     }
     
-    int y = cell1->y-cell2->y;
+    int y = cell1->col-cell2->col;
     if (y==1) {
         cell1->walls[0] = false;
         cell2->walls[2] = false;
@@ -32,8 +32,8 @@ bool in_bounds(Vector2 pos, int width, int height) {
 
 std::vector<std::vector<std::shared_ptr<Cell>>> setup(int width, int height) {
     
-    int cols = width/40;
-    int rows = height/40;
+    int cols = width/20;
+    int rows = height/20;
     std::vector<std::vector<std::shared_ptr<Cell>>> grid;
     std::vector<std::shared_ptr<Cell>> line;
     for (int i=0; i<rows; i++) {
@@ -74,7 +74,7 @@ void mazealgorithm(int width) {
     std::vector<std::vector<std::shared_ptr<Cell>>> grid = setup(width, width);
     std::stack<std::shared_ptr<Cell>> mystack;
     std::shared_ptr<Cell> curr = grid[0][0];
-    SetTargetFPS(20);
+    SetTargetFPS(80);
     bool flag = true;
     
     while (flag) {

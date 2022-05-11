@@ -47,7 +47,7 @@ int main(void)
             start_merge();
         }
         else if (IsKeyPressed(KEY_SEVEN)) {
-            mazealgorithm(800);
+            mazealgorithm(width);
         }
 
     }

@@ -1,5 +1,5 @@
 #include "funcs.hpp"
-
+#include <iostream>
 //Utility
 
 double h(std::shared_ptr<Square> a, std::shared_ptr<Square> b)
@@ -194,6 +194,7 @@ void start_astar(int width) {
             rowcol = get_clicked(mousepos, rows, width);
             row = rowcol.first;
             col = rowcol.second;
+            std::cout << row << " " << col << std::endl;
             if (!start and !grid[col][row]->isEnd()) {
                 startxy.first = row;
                 startxy.second = col;
@@ -241,6 +242,13 @@ void start_astar(int width) {
         }
         else if (IsKeyPressed(KEY_DELETE)) {
             flag = false;
+        }
+        else if (IsKeyPressed(KEY_R)) {
+            grid = make_grid(rows, width);
+            startnode = nullptr;
+            start = false;
+            endnode = nullptr;
+            end = false;
         }
     }
             
@@ -367,6 +375,13 @@ void start_dijkstra(int width) {
         else if (IsKeyPressed(KEY_DELETE)) {
             flag = false;
         }
+        else if (IsKeyPressed(KEY_R)) {
+            grid = make_grid(rows, width);
+            startnode = nullptr;
+            start = false;
+            endnode = nullptr;
+            end = false;
+        }
     }
 }
 
@@ -457,6 +472,9 @@ void start_gol(int width) {
         }
         else if (IsKeyPressed(KEY_DELETE)) {
             flag = false;
+        }
+        else if (IsKeyPressed(KEY_R)) {
+            grid = make_grid(rows, width);
         }
     }
 }

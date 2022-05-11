@@ -5,13 +5,12 @@
 #include <utility>
 #include "raylib.h"
 #include <memory>
+#include "Shape.hpp"
 
-class Square
+class Square : public Shape
 {
 public:
     int wall;
-    int row;
-    int col;
     int width;
     Color color;
     std::string colortype;
@@ -35,7 +34,7 @@ public:
     void setStart();
     void setEnd();
     void setPath();
-    void draw();
+    virtual void draw();
     void updateNeighbours(std::vector<std::vector<std::shared_ptr<Square>>>& grid);
     bool operator==(const Square &other) const;
     bool operator!=(const Square &other) const;
