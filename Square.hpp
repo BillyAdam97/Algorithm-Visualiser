@@ -10,6 +10,8 @@
 class Square : public Shape
 {
 public:
+    
+    //Attributes
     int wall;
     int width;
     Color color;
@@ -19,8 +21,8 @@ public:
     int y;
     int index;
     std::vector<std::shared_ptr<Square>> neigbours;
-    Square(int _row, int _col, int _width, int _total_rows, int _index);
-    ~Square();
+    
+    //Methods
     std::pair<int,int> getPos();
     bool isClosed();
     bool isOpen();
@@ -40,6 +42,10 @@ public:
     bool operator!=(const Square &other) const;
     void countNeighbours(std::vector<std::vector<std::shared_ptr<Square>>>& grid);
     bool within_bounds(int y, int x, int map_h, int map_w);
+    
+    //Constructor & Destructor
+    Square(int _row, int _col, int _width, int _total_rows, int _index);
+    ~Square();
 };
 
 #endif /* Square_hpp */

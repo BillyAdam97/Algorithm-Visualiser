@@ -1,4 +1,6 @@
+#define RAYGUI_IMPLEMENTATION
 #include "raylib.h"
+#include "raygui.h"
 #include "funcs.hpp"
 #include "sortingFuncs.hpp"
 #include "mazefuncs.hpp"
@@ -7,9 +9,18 @@ int main(void)
 {
     int width = 800;
     
-    InitWindow(width, width, "Algorithm Visualiser");
+    //Buttons
+    Rectangle astarB{100.0, 100.0, 250,40};
+    Rectangle dijkB{400.0, 100.0, 250,40};
+    Rectangle golB{100.0, 150.0, 250,40};
+    Rectangle bubbleB{400.0, 150.0, 250,40};
+    Rectangle quickB{100.0, 200.0, 250,40};
+    Rectangle mergeB{400.0, 200.0, 250,40};
+    Rectangle mazeB{100.0, 250.0, 250,40};
     
+    InitWindow(width, width, "Algorithm Visualiser");
     SetTargetFPS(60);
+    GuiSetStyle(DEFAULT, TEXT_SIZE, 20);
     
     while (!WindowShouldClose())
     {
@@ -17,39 +28,30 @@ int main(void)
         ClearBackground(WHITE);
         
         //Options
-        DrawText("Pick an Algorithm", 175, 0, 50, BLACK);
-        DrawText("Press 1 for A Star!", 125, 100, 45, BLACK);
-        DrawText("Press 2 for Dijkstras!", 125, 200, 45, BLACK);
-        DrawText("Press 3 for Game of Life!", 125, 300, 45, BLACK);
-        DrawText("Press 4 for Bubble Sort!", 125, 400, 45, BLACK);
-        DrawText("Press 5 for Quick Sort!", 125, 500, 45, BLACK);
-        DrawText("Press 6 for Merge Sort!", 125, 600, 45, BLACK);
-        DrawText("Press 7 for Maze Generator!", 125, 700, 45, BLACK);
-        
-        EndDrawing();
-        
-        if (IsKeyPressed(KEY_ONE)) {
+        DrawText("Pick an Algorithm", 175, 25, 50, BLACK);
+
+        if (GuiButton(astarB, "A Star!")) {
             start_astar(width);
         }
-        else if (IsKeyPressed(KEY_TWO)) {
+        else if (GuiButton(dijkB, "Dijkstras!")) {
             start_dijkstra(width);
         }
-        else if (IsKeyPressed(KEY_THREE)) {
+        else if (GuiButton(golB, "Game Of Life!")) {
             start_gol(width);
         }
-        else if (IsKeyPressed(KEY_FOUR)) {
+        else if (GuiButton(bubbleB, "Bubble Sort!")) {
             start_bubble();
         }
-        else if (IsKeyPressed(KEY_FIVE)) {
+        else if (GuiButton(quickB, "Quick Sort!")) {
             start_quicksort();
         }
-        else if (IsKeyPressed(KEY_SIX)) {
+        else if (GuiButton(mergeB, "Merge Sort!")) {
             start_merge();
         }
-        else if (IsKeyPressed(KEY_SEVEN)) {
+        else if (GuiButton(mazeB, "Maze Generator!")) {
             mazealgorithm(width);
         }
-
+        EndDrawing();
     }
     
     CloseWindow();

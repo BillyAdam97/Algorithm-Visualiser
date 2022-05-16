@@ -7,13 +7,20 @@
 #include <random>
 #include <ctime>
 
+//Utility
 std::vector<std::shared_ptr<Bar>> make_list(int columns, int width, int height);
 void draw(std::vector<std::shared_ptr<Bar>>& alist);
+
+//Bubble Sort
 void bubblesort(std::vector<std::shared_ptr<Bar>>& alist);
 void start_bubble();
+
+//Quick Sort
 void quicksort(std::vector<std::shared_ptr<Bar>>& alist, int low, int high);
 int partition(std::vector<std::shared_ptr<Bar>>& alist, int low, int high);
 void start_quicksort();
+
+//Merge Sort
 void merge(std::vector<std::shared_ptr<Bar>>& alist, int begin, int mid, int end);
 void mergeSort(std::vector<std::shared_ptr<Bar>>& alist, int begin, int end);
 void start_merge();

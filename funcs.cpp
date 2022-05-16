@@ -171,18 +171,19 @@ bool algorithm(std::vector<std::vector<std::shared_ptr<Square>>>& grid, std::sha
 
 void start_astar(int width) {
     //set up of A star algorithm (setting start and end positions and barriers)
-    bool flag = true;
+    
     int rows = 40;
     std::vector<std::vector<std::shared_ptr<Square>>> grid = make_grid(rows, width);
     Vector2 mousepos = { 0.0f, 0.0f };
     int row;
     int col;
+    bool flag = true;
     bool start = false;
-    std::pair<int,int> startxy;
     bool end = false;
+    bool started = false;
+    std::pair<int,int> startxy;
     std::pair<int,int> endxy;
     std::pair<int,int> rowcol;
-    bool started = false;
     std::shared_ptr<Square> startnode = nullptr;
     std::shared_ptr<Square> endnode = nullptr;
     while (flag) {
@@ -194,7 +195,6 @@ void start_astar(int width) {
             rowcol = get_clicked(mousepos, rows, width);
             row = rowcol.first;
             col = rowcol.second;
-            std::cout << row << " " << col << std::endl;
             if (!start and !grid[col][row]->isEnd()) {
                 startxy.first = row;
                 startxy.second = col;

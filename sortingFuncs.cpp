@@ -97,14 +97,14 @@ int partition(std::vector<std::shared_ptr<Bar>>& alist, int low, int high) {
 
 void start_quicksort() {
     bool flag = true;
-    std::vector<std::shared_ptr<Bar>> alist = make_list(50, 800, 800);
+    std::vector<std::shared_ptr<Bar>> alist = make_list(100, 800, 800);
     while (flag) {
         BeginDrawing();
         drawBars(alist);
         EndDrawing();
         
         if (IsKeyPressed(KEY_R)) {
-            alist = make_list(50, 800, 800);
+            alist = make_list(100, 800, 800);
         }
         else if (IsKeyPressed(KEY_SPACE)) {
             quicksort(alist, 0, alist.size()-1);
