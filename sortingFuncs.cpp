@@ -211,7 +211,7 @@ void start_merge() {
         EndDrawing();
         
         if (IsKeyPressed(KEY_R)) {
-            alist = make_list(50, 800, 800);
+            alist = make_list(100, 800, 800);
         }
         else if (IsKeyPressed(KEY_SPACE)) {
             mergeSort(alist, 0, alist.size()-1);
@@ -225,5 +225,56 @@ void start_merge() {
         else if (IsKeyPressed(KEY_DELETE)) {
             flag = false;
         }
+    }
+}
+
+void selectionSort(std::vector<std::shared_ptr<Bar>>& alist)
+{
+    int n = 0;
+    int temp;
+    
+    for (int i=0; i<alist.size(); i++) {
+        n = i;
+        for (int j=i+1; j<alist.size(); j++) {
+            if (alist[j]->height<alist[n]->height) {
+                n=j;
+            }
+        }
+        temp = alist[n]->x;
+        alist[n]->x = alist[i]->x;
+        alist[i]->x = temp;
+        swap(alist[n],alist[i]);
+        BeginDrawing();
+        drawBars(alist);
+        EndDrawing();
+    }
+}
+
+void start_selection()
+{
+    std::vector<std::shared_ptr<Bar>> alist = make_list(100, 800, 800);
+    bool flag = true;
+    
+    while (flag) {
+        BeginDrawing();
+        drawBars(alist);
+        EndDrawing();
+        
+        if (IsKeyPressed(KEY_R)) {
+            alist = make_list(100, 800, 800);
+        }
+        else if (IsKeyPressed(KEY_SPACE)) {
+            selectionSort(alist);
+            for (int i=0; i<alist.size(); i++) {
+                alist[i]->setSorted();
+                BeginDrawing();
+                drawBars(alist);
+                EndDrawing();
+            }
+        }
+        else if (IsKeyPressed(KEY_DELETE)) {
+            flag = false;
+        }
+        
     }
 }

@@ -11,12 +11,13 @@ int main(void)
     
     //Buttons
     Rectangle astarB{100.0, 100.0, 250,40};
-    Rectangle dijkB{400.0, 100.0, 250,40};
-    Rectangle golB{100.0, 150.0, 250,40};
-    Rectangle bubbleB{400.0, 150.0, 250,40};
-    Rectangle quickB{100.0, 200.0, 250,40};
+    Rectangle dijkB{100.0, 150.0, 250,40};
+    Rectangle golB{100.0, 200.0, 250,40};
+    Rectangle bubbleB{400.0, 100.0, 250,40};
+    Rectangle quickB{400.0, 150.0, 250,40};
     Rectangle mergeB{400.0, 200.0, 250,40};
     Rectangle mazeB{100.0, 250.0, 250,40};
+    Rectangle selectionB{400.0, 250.0, 250,40};
     
     InitWindow(width, width, "Algorithm Visualiser");
     SetTargetFPS(60);
@@ -50,6 +51,9 @@ int main(void)
         }
         else if (GuiButton(mazeB, "Maze Generator!")) {
             mazealgorithm(width);
+        }
+        else if (GuiButton(selectionB, "Selection Sort!")) {
+            start_selection();
         }
         EndDrawing();
     }
