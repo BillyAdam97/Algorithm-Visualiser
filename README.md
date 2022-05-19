@@ -6,6 +6,7 @@ Currently implemented:
 - Dijkstras
 - Game of Life
 - Bubble Sort
+- Selection Sort
 - Merge Sort
 - Quick Sort
 - Maze Generator
