@@ -1,11 +1,11 @@
 #include "Cell.hpp"
 
 Cell::Cell(int _x, int _j)
-    : Shape(_x,_j)
+    : Shape(_x,_j, 20, 20)
 {
     visited = false;
     walls = {true,true,true,true};
-    cols = 800/20;
+    cols = 800/width;
 }
 
 bool Cell::checkbounds(int i, int j) {
@@ -53,50 +53,50 @@ std::shared_ptr<Cell> Cell::checkNeighbours(std::vector<std::vector<std::shared_
 }
 void Cell::draw()
 {
-    int i = row*20;
-    int j = col*20;
+    int i = row*width;
+    int j = col*width;
     Vector2 start;
     Vector2 end;
     
     //TOP
     if (walls[0]) {
         start = {(float)i,(float)j};
-        end = {(float)i+20,(float)j};
+        end = {(float)i+width,(float)j};
         DrawLineEx(start, end, 3.0, BLACK);
     }
     
     
     //RIGHT
     if (walls[1]) {
-        start = {(float)i+20, (float)j};
-        end = {(float)i+20, (float)j+20};
+        start = {(float)i+width, (float)j};
+        end = {(float)i+width, (float)j+width};
         DrawLineEx(start, end, 3.0, BLACK);
     }
     
     
     //BOTTOM
     if (walls[2]) {
-        start = {(float)i+20,(float)j+20};
-        end = {(float)i,(float)j+20};
+        start = {(float)i+width,(float)j+width};
+        end = {(float)i,(float)j+width};
         DrawLineEx(start, end, 3.0, BLACK);
     }
     
     
     //LEFT
     if (walls[3]) {
-        start = {(float)i, (float)j+20};
+        start = {(float)i, (float)j+width};
         end = {(float)i, (float)j};
         DrawLineEx(start, end, 3.0, BLACK);
     }
     
     if (visited) {
-        DrawRectangle(i, j, 20, 20, WHITE);
+        DrawRectangle(i, j, width, width, WHITE);
     }
     
 }
 
 void Cell::highlight() {
-    int i = row*20;
-    int j = col*20;
-    DrawRectangle(i, j, 20, 20, BLUE);
+    int i = row*width;
+    int j = col*width;
+    DrawRectangle(i, j, width, width, BLUE);
 }

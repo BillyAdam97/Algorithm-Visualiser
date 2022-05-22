@@ -4,6 +4,7 @@
 #include "funcs.hpp"
 #include "sortingFuncs.hpp"
 #include "mazefuncs.hpp"
+#include "searchFuncs.hpp"
 
 int main(void)
 {
@@ -18,6 +19,8 @@ int main(void)
     Rectangle mergeB{400.0, 200.0, 250,40};
     Rectangle mazeB{100.0, 250.0, 250,40};
     Rectangle selectionB{400.0, 250.0, 250,40};
+    Rectangle linearB{100.0, 300.0, 250,40};
+    Rectangle binaryB{400.0, 300.0, 250,40};
     
     InitWindow(width, width, "Algorithm Visualiser");
     SetTargetFPS(60);
@@ -54,6 +57,12 @@ int main(void)
         }
         else if (GuiButton(selectionB, "Selection Sort!")) {
             start_selection();
+        }
+        else if (GuiButton(linearB, "Linear Search!")) {
+            startLinear(width);
+        }
+        else if (GuiButton(binaryB, "Binary Search!")) {
+            startBinary(width);
         }
         EndDrawing();
     }

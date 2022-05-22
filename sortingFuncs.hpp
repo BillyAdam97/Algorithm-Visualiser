@@ -29,4 +29,5 @@ void start_merge();
 //Selection Sort
 void selectionSort(std::vector<std::shared_ptr<Bar>>& alist);
 void start_selection();
+
 #endif /* sortingFuncs_hpp */

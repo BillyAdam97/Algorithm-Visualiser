@@ -7,14 +7,23 @@
 #include <unordered_map>
 #include <unordered_set>
 #include "Square.hpp"
+#include "Tile.hpp"
+#include "Entity.hpp"
 
-//Utility
+//Utility - A Star & Dijkstras
 double h(std::shared_ptr<Square> a, std::shared_ptr<Square> b);
-std::vector<std::vector<std::shared_ptr<Square>>> make_grid(int rows, int width);
-void draw_grid(int rows, int width);
+std::vector<std::vector<std::shared_ptr<Square>>> make_Squares(int rows, int width);
 void draw(std::vector<std::vector<std::shared_ptr<Square>>>& grid, int rows, int width);
-std::pair<int,int> get_clicked(Vector2 mousepos, int rows, int width);
 void constructPath(std::vector<std::vector<std::shared_ptr<Square>>>& grid, std::unordered_map<int, std::shared_ptr<Square>>& came_from, std::shared_ptr<Square> end);
+
+//Utility - All
+void draw_grid(int rows, int width);
+std::pair<int,int> get_clicked(Vector2 mousepos, int rows, int width);
+
+
+//Utility - GOL
+std::vector<std::vector<std::shared_ptr<Entity>>> make_Entities(int rows, int width);
+void draw(std::vector<std::vector<std::shared_ptr<Entity>>>& grid, int rows, int width);
 
 //A Star
 void start_astar(int width);
@@ -27,7 +36,7 @@ bool dijkstras(std::vector<std::vector<std::shared_ptr<Square>>>& grid, std::sha
 
 //Game of Life
 void start_gol(int width);
-void gameoflife(std::vector<std::vector<std::shared_ptr<Square>>>& grid, int rows, int width);
+void gameoflife(std::vector<std::vector<std::shared_ptr<Entity>>>& grid, int rows, int width);
 
 
 

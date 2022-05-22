@@ -8,15 +8,11 @@ class Bar : public Shape
 {
 public:
     
-    //Attributes
-    int x;
-    int y;
-    int width;
-    int height;
-    Color color;
-    std::string colortype;
-    
     //Methods
+    bool isChecked();
+    void setChecked();
+    bool isFound();
+    void setFound();
     bool isSorted();
     void setSorted();
     bool isCurr();

@@ -2,12 +2,10 @@
 
 
 Bar::Bar(int _row, int _col, int _width, int _height)
-: Shape(_row, _col), width{_width}, height{_height}
+: Shape(_row, _col, _width, _height, BLACK, "BLACK")
 {
     x=row*width;
     y=800-height;
-    color = BLACK;
-    colortype = "BLACK";
 }
 
 bool Bar::isSorted() {

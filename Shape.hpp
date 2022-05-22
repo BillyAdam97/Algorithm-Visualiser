@@ -1,5 +1,7 @@
 #ifndef Shape_hpp
 #define Shape_hpp
+#include "raylib.h"
+#include <string>
 
 class Shape
 {
@@ -9,7 +11,12 @@ public:
     
     int row;
     int col;
-
+    int x;
+    int y;
+    int width;
+    int height;
+    Color color;
+    std::string colortype;
     
     //Methods
     
@@ -17,7 +24,7 @@ public:
     
     //Constructor + Destructor
     
-    Shape(int row, int col);
+    Shape(int _row, int _col, int _width, int _height, Color _color=WHITE, std::string _type="WHITE");
     virtual ~Shape();
     
 };

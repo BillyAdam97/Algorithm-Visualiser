@@ -8,7 +8,7 @@ double h(std::shared_ptr<Square> a, std::shared_ptr<Square> b)
     return abs(a->x-b->x) + abs(a->y-b->y);
 }
 
-std::vector<std::vector<std::shared_ptr<Square>>> make_grid(int rows, int width)
+std::vector<std::vector<std::shared_ptr<Square>>> make_Squares(int rows, int width)
 // Creates a n by n grid of pointers to Square instances
 {
     std::vector<std::vector<std::shared_ptr<Square>>> grid;
@@ -18,6 +18,23 @@ std::vector<std::vector<std::shared_ptr<Square>>> make_grid(int rows, int width)
     for (int i=0; i<rows; i++) {
         for (int j=0; j<rows; j++) {
             line.emplace_back(std::make_shared<Square>(i,j,gap,rows,count));
+            count++;
+        }
+        grid.emplace_back(std::move(line));
+    }
+    return grid;
+}
+
+std::vector<std::vector<std::shared_ptr<Entity>>> make_Entities(int rows, int width)
+// Creates a n by n grid of pointers to Square instances
+{
+    std::vector<std::vector<std::shared_ptr<Entity>>> grid;
+    std::vector<std::shared_ptr<Entity>> line;
+    int gap = width/rows; //working out the width of each square
+    int count = 0; //indexing each square
+    for (int i=0; i<rows; i++) {
+        for (int j=0; j<rows; j++) {
+            line.emplace_back(std::make_shared<Entity>(i,j,gap,gap));
             count++;
         }
         grid.emplace_back(std::move(line));
@@ -48,6 +65,19 @@ void draw_grid(int rows, int width)
 }
 
 void draw(std::vector<std::vector<std::shared_ptr<Square>>>& grid, int rows, int width)
+//Iterates through the grid and calls draw method for each square. Then draws the grid.
+{
+    ClearBackground(WHITE);
+    for (int i=0; i<grid.size(); i++) {
+        for (int j=0; j<grid[0].size(); j++) {
+            grid[i][j]->draw();
+        }
+    }
+    draw_grid(rows, width);
+    
+}
+
+void draw(std::vector<std::vector<std::shared_ptr<Entity>>>& grid, int rows, int width)
 //Iterates through the grid and calls draw method for each square. Then draws the grid.
 {
     ClearBackground(WHITE);
@@ -173,7 +203,7 @@ void start_astar(int width) {
     //set up of A star algorithm (setting start and end positions and barriers)
     
     int rows = 40;
-    std::vector<std::vector<std::shared_ptr<Square>>> grid = make_grid(rows, width);
+    std::vector<std::vector<std::shared_ptr<Square>>> grid = make_Squares(rows, width);
     Vector2 mousepos = { 0.0f, 0.0f };
     int row;
     int col;
@@ -244,7 +274,7 @@ void start_astar(int width) {
             flag = false;
         }
         else if (IsKeyPressed(KEY_R)) {
-            grid = make_grid(rows, width);
+            grid = make_Squares(rows, width);
             startnode = nullptr;
             start = false;
             endnode = nullptr;
@@ -313,7 +343,7 @@ void start_dijkstra(int width) {
     
     bool flag = true;
     int rows = 40;
-    std::vector<std::vector<std::shared_ptr<Square>>> grid = make_grid(rows, width);
+    std::vector<std::vector<std::shared_ptr<Square>>> grid = make_Squares(rows, width);
     Vector2 mousepos = { 0.0f, 0.0f };
     int row;
     int col;
@@ -376,7 +406,7 @@ void start_dijkstra(int width) {
             flag = false;
         }
         else if (IsKeyPressed(KEY_R)) {
-            grid = make_grid(rows, width);
+            grid = make_Squares(rows, width);
             startnode = nullptr;
             start = false;
             endnode = nullptr;
@@ -387,7 +417,7 @@ void start_dijkstra(int width) {
 
 // Game of Life
 
-void gameoflife(std::vector<std::vector<std::shared_ptr<Square>>>& grid, int rows, int width) {
+void gameoflife(std::vector<std::vector<std::shared_ptr<Entity>>>& grid, int rows, int width) {
     //Game of life implementation.
     
     SetTargetFPS(20);
@@ -400,7 +430,7 @@ void gameoflife(std::vector<std::vector<std::shared_ptr<Square>>>& grid, int row
         for (int j=0; j<grid.size(); j++) {
             for (int k=0; k<grid[0].size(); k++) {
                 grid[j][k]->countNeighbours(grid);
-                if (grid[j][k]->isBarrier()) {
+                if (grid[j][k]->isWall()) {
                     if (grid[j][k]->wall<2) {
                         temp[j][k] = false;
                     }
@@ -421,7 +451,7 @@ void gameoflife(std::vector<std::vector<std::shared_ptr<Square>>>& grid, int row
         for (int i=0; i<temp.size(); i++) {
             for (int j=0; j<temp[0].size(); j++) {
                 if (temp[i][j]) {
-                    grid[i][j]->setBarrier();
+                    grid[i][j]->setWall();
                 }
                 else {
                     grid[i][j]->reset();
@@ -438,7 +468,7 @@ void start_gol(int width) {
     //Setting up of game of life (setting alive tiles).
     
     int rows = 40;
-    std::vector<std::vector<std::shared_ptr<Square>>> grid = make_grid(rows, width);
+    std::vector<std::vector<std::shared_ptr<Entity>>> grid = make_Entities(rows, width);
     Vector2 mousepos = { 00.0f, 00.0f };
     int row;
     int col;
@@ -454,8 +484,8 @@ void start_gol(int width) {
             rowcol = get_clicked(mousepos, rows, width);
             row = rowcol.first;
             col = rowcol.second;
-            if (!grid[col][row]->isBarrier()) {
-                grid[col][row]->setBarrier();
+            if (!grid[col][row]->isWall()) {
+                grid[col][row]->setWall();
             }
         }
         else if (IsMouseButtonDown(MOUSE_BUTTON_RIGHT)) {
@@ -463,7 +493,7 @@ void start_gol(int width) {
             rowcol = get_clicked(mousepos, rows,width);
             row = rowcol.first;
             col = rowcol.second;
-            if (grid[col][row]->isBarrier()) {
+            if (grid[col][row]->isWall()) {
                 grid[col][row]->reset();
             }
         }
@@ -474,7 +504,7 @@ void start_gol(int width) {
             flag = false;
         }
         else if (IsKeyPressed(KEY_R)) {
-            grid = make_grid(rows, width);
+            grid = make_Entities(rows, width);
         }
     }
 }
