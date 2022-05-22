@@ -25,6 +25,10 @@ std::pair<int,int> get_clicked(Vector2 mousepos, int rows, int width);
 std::vector<std::vector<std::shared_ptr<Entity>>> make_Entities(int rows, int width);
 void draw(std::vector<std::vector<std::shared_ptr<Entity>>>& grid, int rows, int width);
 
+//Utility - MapG
+std::vector<std::vector<std::unique_ptr<Tile>>> make_map(int rows, int width, int density, int seed);
+void draw(std::vector<std::vector<std::unique_ptr<Tile>>>& grid, int rows, int width);
+
 //A Star
 void start_astar(int width);
 bool algorithm(std::vector<std::vector<std::shared_ptr<Square>>>& grid, std::shared_ptr<Square> start, std::shared_ptr<Square> end);
@@ -39,7 +43,10 @@ void start_gol(int width);
 void gameoflife(std::vector<std::vector<std::shared_ptr<Entity>>>& grid, int rows, int width);
 
 
-
+//Map Generator
+void start_MapG(int width);
+std::vector<std::vector<char>> make_temp(std::vector<std::vector<std::unique_ptr<Tile>>>& grid);
+void map_gen(std::vector<std::vector<std::unique_ptr<Tile>>>& grid, int count);
 #endif /* funcs_hpp */
 
 

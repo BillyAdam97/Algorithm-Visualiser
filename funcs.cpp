@@ -42,6 +42,31 @@ std::vector<std::vector<std::shared_ptr<Entity>>> make_Entities(int rows, int wi
     return grid;
 }
 
+std::vector<std::vector<std::unique_ptr<Tile>>> make_map(int rows, int width, int density, int seed)
+{
+    std::vector<std::vector<std::unique_ptr<Tile>>> grid;
+    std::vector<std::unique_ptr<Tile>> line;
+    int gap = width/rows;
+    int count = 0;
+    int num = 0;
+    std::srand(seed);
+    for (int i = 0; i<rows; i++) {
+        for (int j=0; j<rows; j++) {
+            line.emplace_back(std::make_unique<Tile>(i,j,gap));
+            num = 1+(rand()%100);
+            if (num>=density) {
+                line[j]->setLand();
+            }
+            else {
+                line[j]->setWater();
+            }
+            count++;
+        }
+        grid.emplace_back(std::move(line));
+    }
+    return grid;
+}
+
 void draw_grid(int rows, int width)
 //Draws the grid lines
 {
@@ -61,6 +86,17 @@ void draw_grid(int rows, int width)
 //        end.y = width;
 //        DrawLineEx(start, end, 3.0, BLACK);
         DrawLine((i*gap), 0, (i*gap), width, GRAY);
+    }
+}
+
+void draw(std::vector<std::vector<std::unique_ptr<Tile>>>& grid, int rows, int width)
+//Iterates through the grid and calls draw method for each square.
+{
+    ClearBackground(WHITE);
+    for (int i=0; i<grid.size(); i++) {
+        for (int j=0; j<grid[0].size(); j++) {
+            grid[i][j]->draw();
+        }
     }
 }
 
@@ -506,5 +542,100 @@ void start_gol(int width) {
         else if (IsKeyPressed(KEY_R)) {
             grid = make_Entities(rows, width);
         }
+    }
+}
+
+//MapG
+
+std::vector<std::vector<char>> make_temp(std::vector<std::vector<std::unique_ptr<Tile>>>& grid) {
+    
+    std::vector<std::vector<char>> temp;
+    std::vector<char> line;
+    
+    for (int i=0; i<grid.size(); i++) {
+        for ( int j=0; j<grid[0].size(); j++) {
+            if (grid[i][j]->isLand()) {
+                line.emplace_back('L');
+            }
+            else if (grid[i][j]->isWater()){
+                line.emplace_back('W');
+            }
+            else if (grid[i][j]->isDarkLand()) {
+                line.emplace_back('D');
+            }
+            else if (grid[i][j]->isDarkWater()) {
+                line.emplace_back('V');
+            }
+        }
+        temp.push_back(line);
+    }
+    return temp;
+}
+
+void start_MapG(int width)
+{
+    bool flag = true;
+    std::vector<std::vector<std::unique_ptr<Tile>>> grid = make_map(50, width, 30, time(0));
+    
+    while (flag) {
+        BeginDrawing();
+        ClearBackground(WHITE);
+        draw(grid, 50, width);
+        EndDrawing();
+        
+        if (IsKeyPressed(KEY_R)) {
+            grid = make_map(50, width, 30, time(0));
+        }
+        else if (IsKeyPressed(KEY_SPACE)) {
+            map_gen(grid, 15);
+        }
+        else if (IsKeyPressed(KEY_DELETE)) {
+            flag = false;
+        }
+    }
+}
+
+void map_gen(std::vector<std::vector<std::unique_ptr<Tile>>>& grid, int count) {
+    SetTargetFPS(20);
+    std::vector<std::vector<char>> temp;
+    for (int i=0; i<count; i++) {
+        temp = make_temp(grid);
+        for (int j=0; j<grid.size(); j++) {
+            for (int k=0; k<grid[0].size(); k++) {
+                grid[j][k]->countNeighbours(grid);
+                
+                if (grid[j][k]->land==8 || grid[j][k]->darkland>4) {
+                    temp[j][k] = 'D';
+                }
+                else if (grid[j][k]->land>4) {
+                    temp[j][k] = 'L';
+                }
+                else if (grid[j][k]->water==8 || grid[j][k]->darkwater>3) {
+                    temp[j][k] = 'V';
+                }
+                else if (grid[j][k]->water>2){
+                    temp[j][k] = 'W';
+                }
+            }
+        }
+        for (int i=0; i<temp.size(); i++) {
+            for (int j=0; j<temp[0].size(); j++) {
+                if (temp[i][j]=='L') {
+                    grid[i][j]->setLand();
+                }
+                else if (temp[i][j]=='W') {
+                    grid[i][j]->setWater();
+                }
+                else if (temp[i][j]=='D') {
+                    grid[i][j]->setDarkLand();
+                }
+                else if (temp[i][j]=='V') {
+                    grid[i][j]->setDarkWater();
+                }
+            }
+        }
+        BeginDrawing();
+        draw(grid, 50, 800);
+        EndDrawing();
     }
 }

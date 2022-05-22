@@ -21,6 +21,7 @@ int main(void)
     Rectangle selectionB{400.0, 250.0, 250,40};
     Rectangle linearB{100.0, 300.0, 250,40};
     Rectangle binaryB{400.0, 300.0, 250,40};
+    Rectangle mapgB{100.0, 350.0, 250,40};
     
     InitWindow(width, width, "Algorithm Visualiser");
     SetTargetFPS(60);
@@ -63,6 +64,9 @@ int main(void)
         }
         else if (GuiButton(binaryB, "Binary Search!")) {
             startBinary(width);
+        }
+        else if (GuiButton(mapgB, "Map Generator!")) {
+            start_MapG(width);
         }
         EndDrawing();
     }
