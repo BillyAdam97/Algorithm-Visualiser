@@ -10,3 +10,8 @@ Currently implemented:
 - Merge Sort
 - Quick Sort
 - Maze Generator
+
+
+To implement:
+- Binary Search
+- Linear Search
