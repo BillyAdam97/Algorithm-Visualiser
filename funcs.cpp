@@ -575,16 +575,16 @@ std::vector<std::vector<char>> make_temp(std::vector<std::vector<std::unique_ptr
 void start_MapG(int width)
 {
     bool flag = true;
-    std::vector<std::vector<std::unique_ptr<Tile>>> grid = make_map(50, width, 30, time(0));
+    std::vector<std::vector<std::unique_ptr<Tile>>> grid = make_map(100, width, 30, time(0));
     
     while (flag) {
         BeginDrawing();
         ClearBackground(WHITE);
-        draw(grid, 50, width);
+        draw(grid, 100, width);
         EndDrawing();
         
         if (IsKeyPressed(KEY_R)) {
-            grid = make_map(50, width, 30, time(0));
+            grid = make_map(100, width, 30, time(0));
         }
         else if (IsKeyPressed(KEY_SPACE)) {
             map_gen(grid, 15);
@@ -635,7 +635,7 @@ void map_gen(std::vector<std::vector<std::unique_ptr<Tile>>>& grid, int count) {
             }
         }
         BeginDrawing();
-        draw(grid, 50, 800);
+        draw(grid, 100, 800);
         EndDrawing();
     }
 }

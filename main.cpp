@@ -5,6 +5,7 @@
 #include "sortingFuncs.hpp"
 #include "mazefuncs.hpp"
 #include "searchFuncs.hpp"
+#include "diffuseFuncs.hpp"
 
 int main(void)
 {
@@ -22,6 +23,7 @@ int main(void)
     Rectangle linearB{100.0, 300.0, 250,40};
     Rectangle binaryB{400.0, 300.0, 250,40};
     Rectangle mapgB{100.0, 350.0, 250,40};
+    Rectangle diffuseB{400.0, 350.0, 250,40};
     
     InitWindow(width, width, "Algorithm Visualiser");
     SetTargetFPS(60);
@@ -67,6 +69,9 @@ int main(void)
         }
         else if (GuiButton(mapgB, "Map Generator!")) {
             start_MapG(width);
+        }
+        else if (GuiButton(diffuseB, "Reaction Diffusion!")) {
+            start_diffuse(width);
         }
         EndDrawing();
     }

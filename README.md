@@ -12,3 +12,5 @@ Currently implemented:
 - Maze Generator
 - Binary Search
 - Linear Search
+- Map Generator
+- Reaction Diffusion
