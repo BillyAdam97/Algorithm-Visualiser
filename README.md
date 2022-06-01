@@ -14,3 +14,4 @@ Currently implemented:
 - Linear Search
 - Map Generator
 - Reaction Diffusion
+- Prims Minimal Spanning Tree
