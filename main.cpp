@@ -6,6 +6,7 @@
 #include "mazefuncs.hpp"
 #include "searchFuncs.hpp"
 #include "diffuseFuncs.hpp"
+#include "mstfuncs.hpp"
 
 int main(void)
 {
@@ -24,6 +25,7 @@ int main(void)
     Rectangle binaryB{400.0, 300.0, 250,40};
     Rectangle mapgB{100.0, 350.0, 250,40};
     Rectangle diffuseB{400.0, 350.0, 250,40};
+    Rectangle primsB{100.0, 400.0, 250,40};
     
     InitWindow(width, width, "Algorithm Visualiser");
     SetTargetFPS(60);
@@ -72,6 +74,9 @@ int main(void)
         }
         else if (GuiButton(diffuseB, "Reaction Diffusion!")) {
             start_diffuse(width);
+        }
+        else if (GuiButton(primsB, "Prims Min Spanning Tree!")) {
+            start_prims();
         }
         EndDrawing();
     }

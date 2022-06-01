@@ -33,7 +33,6 @@ void drawpixels(std::vector<std::vector<Pixel>>& grid)
     for (int i=1; i<grid.size()-1; i++) {
         for (int j=1; j<grid[0].size()-1; j++) {
             c = (grid[i][j].a-grid[i][j].b)*255;
-//            std::cout << c << std::endl;
             c = constain(c, 0.0, 255.0);
             grid[i][j].color.r = c;
             grid[i][j].color.g = c;
@@ -80,10 +79,7 @@ float laplaceB(std::vector<std::vector<Pixel>>& grid, int x, int y)
 
 void diffuse(std::vector<std::vector<Pixel>>& grid, std::vector<std::vector<Pixel>>& next)
 {
-    //they share same memory so need to make a copy in a different way ---- 15/05/2022 fix this
     
-//    std::vector<std::vector<std::pair<float,float>>> next;
-//    std::vector<std::pair<float,float>> line;
     float dA = 1.0;
     float dB = 0.5;
     //0.055 0.062 coral
@@ -117,6 +113,7 @@ void start_diffuse(int width) {
         
         if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
             mouse = GetMousePosition();
+            correct_bound(mouse, width, width);
             rowcol = get_clicked(mouse, rows, width);
             grid[rowcol.second][rowcol.first].b = 1.0;
         }

@@ -19,7 +19,7 @@ void constructPath(std::vector<std::vector<std::shared_ptr<Square>>>& grid, std:
 //Utility - All
 void draw_grid(int rows, int width);
 std::pair<int,int> get_clicked(Vector2 mousepos, int rows, int width);
-
+void correct_bound(Vector2& mouse, int width, int height);
 
 //Utility - GOL
 std::vector<std::vector<std::shared_ptr<Entity>>> make_Entities(int rows, int width);

@@ -2,6 +2,21 @@
 #include <iostream>
 //Utility
 
+void correct_bound(Vector2& mouse, int width, int height) {
+    if (mouse.y<0) {
+        mouse.y=0;
+    }
+    if (mouse.x<0) {
+        mouse.x=0;
+    }
+    if (mouse.y>=width) {
+        mouse.y=width-1;
+    }
+    if (mouse.x>=width) {
+        mouse.x=width-1;
+    }
+}
+
 double h(std::shared_ptr<Square> a, std::shared_ptr<Square> b)
 // Works out the heuristic of two nodes
 {
@@ -258,6 +273,7 @@ void start_astar(int width) {
         EndDrawing();
         if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
             mousepos = GetMousePosition();
+            correct_bound(mousepos, width, width);
             rowcol = get_clicked(mousepos, rows, width);
             row = rowcol.first;
             col = rowcol.second;
@@ -281,6 +297,7 @@ void start_astar(int width) {
         }
         else if (IsMouseButtonDown(MOUSE_BUTTON_RIGHT)) {
             mousepos = GetMousePosition();
+            correct_bound(mousepos, width, width);
             rowcol = get_clicked(mousepos, rows, width);
             row = rowcol.first;
             col = rowcol.second;
@@ -394,6 +411,7 @@ void start_dijkstra(int width) {
         EndDrawing();
         if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
             mousepos = GetMousePosition();
+            correct_bound(mousepos, width, width);
             rowcol = get_clicked(mousepos, rows, width);
             row = rowcol.first;
             col = rowcol.second;
@@ -413,6 +431,7 @@ void start_dijkstra(int width) {
         }
         else if (IsMouseButtonDown(MOUSE_BUTTON_RIGHT)) {
             mousepos = GetMousePosition();
+            correct_bound(mousepos, width, width);
             rowcol = get_clicked(mousepos, rows,width);
             row = rowcol.first;
             col = rowcol.second;
@@ -517,6 +536,7 @@ void start_gol(int width) {
         EndDrawing();
         if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
             mousepos = GetMousePosition();
+            correct_bound(mousepos, width, width);
             rowcol = get_clicked(mousepos, rows, width);
             row = rowcol.first;
             col = rowcol.second;
@@ -526,6 +546,7 @@ void start_gol(int width) {
         }
         else if (IsMouseButtonDown(MOUSE_BUTTON_RIGHT)) {
             mousepos = GetMousePosition();
+            correct_bound(mousepos, width, width);
             rowcol = get_clicked(mousepos, rows,width);
             row = rowcol.first;
             col = rowcol.second;
