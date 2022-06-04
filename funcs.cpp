@@ -1,5 +1,7 @@
 #include "funcs.hpp"
 #include <iostream>
+#include "raygui.h"
+
 //Utility
 
 void correct_bound(Vector2& mouse, int width, int height) {
@@ -468,6 +470,243 @@ void start_dijkstra(int width) {
             end = false;
         }
     }
+}
+
+//Wolfam
+
+void ruleCA(std::vector<std::vector<std::shared_ptr<Entity>>>& grid, int rows, int width, int rule)
+{
+    SetTargetFPS(20);
+    std::vector<bool> temp(grid.size(),0);
+    for (int ind = 0; ind<rows-1; ind++) {
+        
+        BeginDrawing();
+        draw(grid, rows, width);
+        EndDrawing();
+        for (int i=1; i<grid[ind].size()-1; i++) {
+            //grid[ind][i]->wolfamCount(grid, ind);
+            temp[i] = rules(grid[i-1][ind]->isWall(), grid[i][ind]->isWall(), grid[i+1][ind]->isWall(), rule);
+            
+        }
+        for (int i=0; i<temp.size(); i++) {
+            if (temp[i]) {
+                grid[i][ind+1]->setWall();
+            }
+        }
+    }
+}
+
+bool rules(bool left, bool mid, bool right, int rule)
+{
+    std::array<bool, 8> ruleset;
+    switch(rule) {
+        case 30:
+            ruleset = {0,0,0,1,1,1,1,0};
+            break;
+        case 54:
+            ruleset = {0,0,1,1,0,1,1,0};
+            break;
+        case 60:
+            ruleset = {0,0,1,1,1,1,0,0};
+            break;
+        case 62:
+            ruleset = {0,0,1,1,1,1,1,0};
+            break;
+        case 90:
+            ruleset = {0,1,0,1,1,0,1,0};
+            break;
+        case 94:
+            ruleset = {0,1,0,1,1,1,1,0};
+            break;
+        case 102:
+            ruleset = {0,1,1,0,0,1,1,0};
+            break;
+        case 110:
+            ruleset = {0,1,1,0,1,1,1,0};
+            break;
+        case 122:
+            ruleset = {0,1,1,1,1,0,1,0};
+            break;
+        case 126:
+            ruleset = {0,1,1,1,1,1,1,0};
+            break;
+        case 150:
+            ruleset = {1,0,0,1,0,1,1,0};
+            break;
+        case 158:
+            ruleset = {1,0,0,1,1,1,1,0};
+            break;
+        case 182:
+            ruleset = {1,0,1,1,0,1,1,0};
+            break;
+        case 188:
+            ruleset = {1,0,1,1,1,1,0,0};
+            break;
+        case 190:
+            ruleset = {1,0,1,1,1,1,1,0};
+            break;
+        case 220:
+            ruleset = {1,1,0,1,1,1,0,0};
+            break;
+        case 222:
+            ruleset = {1,1,0,1,1,1,1,0};
+            break;
+        case 250:
+            ruleset = {1,1,1,1,1,0,1,0};
+            break;
+    }
+    if (left && mid && right) return ruleset[0];
+    else if (left && mid) return ruleset[1];
+    else if (left && right) return ruleset[2];
+    else if (left) return ruleset[3];
+    else if (mid && right) return ruleset[4];
+    else if (mid) return ruleset[5];
+    else if (right) return ruleset[6];
+    else return ruleset[7];
+}
+
+void start_rule(int width, int rule)
+{
+    
+    int rows = 40;
+    std::vector<std::vector<std::shared_ptr<Entity>>> grid = make_Entities(rows, width);
+    Vector2 mousepos = { 00.0f, 00.0f };
+    int row;
+    int col;
+    std::pair<int,int> rowcol;
+    bool flag = true;
+    while (flag) {
+        BeginDrawing();
+        draw(grid, rows, width);
+        EndDrawing();
+        if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
+            mousepos = GetMousePosition();
+            correct_bound(mousepos, width, width);
+            rowcol = get_clicked(mousepos, rows, width);
+            row = rowcol.first;
+            col = rowcol.second;
+            if (!grid[col][row]->isWall()) {
+                grid[col][row]->setWall();
+            }
+        }
+        else if (IsMouseButtonDown(MOUSE_BUTTON_RIGHT)) {
+            mousepos = GetMousePosition();
+            correct_bound(mousepos, width, width);
+            rowcol = get_clicked(mousepos, rows,width);
+            row = rowcol.first;
+            col = rowcol.second;
+            if (grid[col][row]->isWall()) {
+                grid[col][row]->reset();
+            }
+        }
+        if (IsKeyPressed(KEY_SPACE)) {
+            //gameoflife(grid,rows, width);
+            ruleCA(grid, rows, width, rule);
+        }
+        else if (IsKeyPressed(KEY_DELETE)) {
+            flag = false;
+        }
+        else if (IsKeyPressed(KEY_R)) {
+            grid = make_Entities(rows, width);
+        }
+    }
+}
+
+void choose_rule(int width)
+{
+    SetMousePosition(width/2-25, width/2);
+    bool flag = true;
+    Rectangle rule30{100.0, 100.0, 250,40};
+    Rectangle rule54{400.0, 100.0, 250,40};
+    
+    Rectangle rule60{100.0, 150.0, 250,40};
+    Rectangle rule62{400.0, 150.0, 250,40};
+    
+    Rectangle rule90{100.0, 200.0, 250,40};
+    Rectangle rule94{400.0, 200.0, 250,40};
+    
+    Rectangle rule102{100.0, 250.0, 250,40};
+    Rectangle rule110{400.0, 250.0, 250,40};
+    
+    Rectangle rule122{100.0, 300.0, 250,40};
+    Rectangle rule126{400.0, 300.0, 250,40};
+    
+    Rectangle rule150{100.0, 350.0, 250,40};
+    Rectangle rule158{400.0, 350.0, 250,40};
+    
+    Rectangle rule182{100.0, 400.0, 250,40};
+    Rectangle rule188{400.0, 400.0, 250,40};
+    
+    Rectangle rule190{100.0, 450.0, 250,40};
+    Rectangle rule220{400.0, 450.0, 250,40};
+    
+    Rectangle rule222{100.0, 500.0, 250,40};
+    Rectangle rule250{400.0, 500.0, 250,40};
+    
+    while (flag) {
+        BeginDrawing();
+        ClearBackground(WHITE);
+        if (GuiButton(rule30, "Rule 30")) {
+            start_rule(width, 30);
+        }
+        else if (GuiButton(rule54, "Rule 54")) {
+            start_rule(width, 54);
+        }
+        else if (GuiButton(rule60, "Rule 60")) {
+            start_rule(width, 60);
+        }
+        else if (GuiButton(rule62, "Rule 62")) {
+            start_rule(width, 62);
+        }
+        else if (GuiButton(rule90, "Rule 90")) {
+            start_rule(width, 90);
+        }
+        else if (GuiButton(rule94, "Rule 94")) {
+            start_rule(width, 94);
+        }
+        else if (GuiButton(rule102, "Rule 102")) {
+            start_rule(width, 102);
+        }
+        else if (GuiButton(rule110, "Rule 110")) {
+            start_rule(width, 110);
+        }
+        else if (GuiButton(rule122, "Rule 122")) {
+            start_rule(width, 122);
+        }
+        else if (GuiButton(rule126, "Rule 126")) {
+            start_rule(width, 126);
+        }
+        else if (GuiButton(rule150, "Rule 150")) {
+            start_rule(width, 150);
+        }
+        else if (GuiButton(rule158, "Rule 158")) {
+            start_rule(width, 158);
+        }
+        else if (GuiButton(rule182, "Rule 182")) {
+            start_rule(width, 182);
+        }
+        else if (GuiButton(rule188, "Rule 188")) {
+            start_rule(width, 188);
+        }
+        else if (GuiButton(rule190, "Rule 190")) {
+            start_rule(width, 190);
+        }
+        else if (GuiButton(rule220, "Rule 220")) {
+            start_rule(width, 220);
+        }
+        else if (GuiButton(rule222, "Rule 222")) {
+            start_rule(width, 222);
+        }
+        else if (GuiButton(rule250, "Rule 250")) {
+            start_rule(width, 250);
+        }
+        EndDrawing();
+        
+        if (IsKeyPressed(KEY_DELETE)) {
+            flag = false;
+        }
+    }
+    
 }
 
 // Game of Life

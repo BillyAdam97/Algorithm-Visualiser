@@ -26,6 +26,7 @@ int main(void)
     Rectangle mapgB{100.0, 350.0, 250,40};
     Rectangle diffuseB{400.0, 350.0, 250,40};
     Rectangle primsB{100.0, 400.0, 250,40};
+    Rectangle wolfamB{400.0, 400.0, 250,40};
     
     InitWindow(width, width, "Algorithm Visualiser");
     SetTargetFPS(60);
@@ -73,10 +74,15 @@ int main(void)
             start_MapG(width);
         }
         else if (GuiButton(diffuseB, "Reaction Diffusion!")) {
-            start_diffuse(width);
+            //start_diffuse(width);
+            diffusionChoice(width);
         }
         else if (GuiButton(primsB, "Prims Min Spanning Tree!")) {
             start_prims();
+        }
+        else if (GuiButton(wolfamB, "Wolfams CA!")) {
+            //start_r30(width);
+            choose_rule(width);
         }
         EndDrawing();
     }

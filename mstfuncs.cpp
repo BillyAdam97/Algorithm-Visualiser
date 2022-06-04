@@ -35,20 +35,20 @@ int minKey(std::vector<float>& key, std::vector<bool>& mstSet)
 }
 
 void mst(std::vector<std::shared_ptr<Node>>& nodes, std::vector<float>& key, std::vector<bool>& mstSet) {
+    SetTargetFPS(10);
     std::vector<int> parent(nodes.size(),-1);
     key[0] = 0;
     int u;
+    nodes[0]->setVisited();
     for (int count=0; count<nodes.size()-1; count++) {
         
         u = minKey(key, mstSet);
         
         mstSet[u] = true;
-        nodes[u]->setVisited();
+//        nodes[u]->setVisited();
         
         for (int i=0; i<nodes[u]->edges.size(); i++) {
             if (mstSet[nodes[u]->edges[i].first->ind] == false && nodes[u]->edges[i].second<key[nodes[u]->edges[i].first->ind]) {
-//                nodes[u]->lineColor[nodes[u]->edges[i].first->ind] = GREEN;
-//                nodes[u]->edges[i].first->lineColor[nodes[u]->ind] = GREEN;
                 parent[nodes[u]->edges[i].first->ind] = u;
                 key[nodes[u]->edges[i].first->ind] = nodes[u]->edges[i].second;
             }
@@ -63,10 +63,12 @@ void mst(std::vector<std::shared_ptr<Node>>& nodes, std::vector<float>& key, std
             nodes[i]->lineColor[parent[i]] = GREEN;
             nodes[parent[i]]->lineColor[i] = GREEN;
         }
+        BeginDrawing();
+        ClearBackground(WHITE);
+        drawGraph(nodes);
+        EndDrawing();
     }
-    BeginDrawing();
-    drawGraph(nodes);
-    EndDrawing();
+    SetTargetFPS(60);
 }
 
 void start_prims()
@@ -141,9 +143,9 @@ void start_prims()
         //sqrt( std::pow(c2->x-c1->x,2) + std::pow(c2->y-c1->y,2))
         //dis = sqrt( pow((graph.graph[i][j].first->x-graph.adjlist[i]->x),2) + pow((graph.graph[i][j].first->y-graph.adjlist[i]->y),2) );
         if (c1 && c2) {
-            temppair = std::make_pair(c2,sqrt( std::pow(c2->row-c1->row,2) + std::pow(c2->col-c1->col,2)));
+            temppair = std::make_pair(c2,sqrt( abs(std::pow(c2->row-c1->row,2) + std::pow(c2->col-c1->col,2))) );
             c1->edges.emplace_back(temppair);
-            temppair = std::make_pair(c1, sqrt( std::pow(c2->row-c1->row,2) + std::pow(c2->col-c1->col,2)) );
+            temppair = std::make_pair(c1, sqrt( abs(std::pow(c2->row-c1->row,2) + std::pow(c2->col-c1->col,2))) );
             c2->edges.emplace_back(temppair);
             c1->lineColor[c2->ind] = BLACK;
             c2->lineColor[c1->ind] = BLACK;

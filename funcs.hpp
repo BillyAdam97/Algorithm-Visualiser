@@ -9,6 +9,7 @@
 #include "Square.hpp"
 #include "Tile.hpp"
 #include "Entity.hpp"
+#include <array>
 
 //Utility - A Star & Dijkstras
 double h(std::shared_ptr<Square> a, std::shared_ptr<Square> b);
@@ -42,11 +43,17 @@ bool dijkstras(std::vector<std::vector<std::shared_ptr<Square>>>& grid, std::sha
 void start_gol(int width);
 void gameoflife(std::vector<std::vector<std::shared_ptr<Entity>>>& grid, int rows, int width);
 
+//Wolfam
+void ruleCA(std::vector<std::vector<std::shared_ptr<Entity>>>& grid, int rows, int width, int rule);
+bool rules(bool left, bool mid, bool right, int rule);
+void start_rule(int width, int rule);
+void choose_rule(int width);
 
 //Map Generator
 void start_MapG(int width);
 std::vector<std::vector<char>> make_temp(std::vector<std::vector<std::unique_ptr<Tile>>>& grid);
 void map_gen(std::vector<std::vector<std::unique_ptr<Tile>>>& grid, int count);
+
 #endif /* funcs_hpp */
 
 

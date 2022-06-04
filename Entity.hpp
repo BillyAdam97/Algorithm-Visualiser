@@ -13,6 +13,7 @@ public:
     void reset();
     virtual void draw() override;
     void countNeighbours(std::vector<std::vector<std::shared_ptr<Entity>>>& grid);
+    void wolfamCount(std::vector<std::vector<std::shared_ptr<Entity>>>& grid, int ind);
     bool within_bounds(int y, int x, int map_h, int map_w);
     Entity(int _row, int _col, int _width, int _height);
     ~Entity();

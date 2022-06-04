@@ -37,6 +37,7 @@ void linearSearch(std::vector<std::shared_ptr<Bar>>& alist, std::shared_ptr<Bar>
             alist[i]->setCurr();
         }
         BeginDrawing();
+        ClearBackground(WHITE);
         drawSorted(alist);
         EndDrawing();
     }
@@ -52,6 +53,7 @@ void startLinear(int width)
     while (flag) {
         
         BeginDrawing();
+        ClearBackground(WHITE);
         drawSorted(alist);
         EndDrawing();
         
@@ -109,6 +111,7 @@ void startBinary(int width)
     while (flag) {
         
         BeginDrawing();
+        ClearBackground(WHITE);
         drawSorted(alist);
         EndDrawing();
         

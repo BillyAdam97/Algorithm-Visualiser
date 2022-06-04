@@ -57,4 +57,17 @@ void Entity::countNeighbours(std::vector<std::vector<std::shared_ptr<Entity>>>& 
     }
 }
 
+void Entity::wolfamCount(std::vector<std::vector<std::shared_ptr<Entity>>>& grid, int ind)
+{
+    bool ans = false;
+    wall = 0;
+    for (int x=row-1; x<=row+1; x++) {
+        ans = within_bounds(ind, x, grid.size(), grid[0].size());
+        if (ans) {
+            if (grid[ind][x]->isWall()) {
+                    wall++;
+            }
+        }
+    }
+}
 

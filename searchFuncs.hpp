@@ -13,4 +13,5 @@ int getbar(Vector2 mouse, int columns, int width);
 
 void binarySearch(std::vector<std::shared_ptr<Bar>>& alist, std::shared_ptr<Bar>& chosen);
 void startBinary(int width);
+
 #endif /* searchFuncs_hpp */

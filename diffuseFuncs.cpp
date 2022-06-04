@@ -1,5 +1,6 @@
 #include "diffuseFuncs.hpp"
 #include "funcs.hpp"
+#include "raygui.h"
 
 std::vector<std::vector<Pixel>> make_pixels(int width, int height, int rows)
 {
@@ -77,15 +78,15 @@ float laplaceB(std::vector<std::vector<Pixel>>& grid, int x, int y)
     return sum;
 }
 
-void diffuse(std::vector<std::vector<Pixel>>& grid, std::vector<std::vector<Pixel>>& next)
+void diffuse(std::vector<std::vector<Pixel>>& grid, std::vector<std::vector<Pixel>>& next, float feed, float k)
 {
     
     float dA = 1.0;
     float dB = 0.5;
     //0.055 0.062 coral
     //0.0367 0.0649 mitosis
-    float feed = 0.055;
-    float k = 0.062;
+//    float feed = 0.055;
+//    float k = 0.062;
     for (int i=1; i<grid.size()-1; i++) {
         for (int j=1; j<grid[0].size()-1; j++) {
             next[i][j].a = constain(grid[i][j].a + dA*laplaceA(grid,i,j)-grid[i][j].a*grid[i][j].b*grid[i][j].b + feed*(1-grid[i][j].a), 0.0, 1.0);
@@ -95,7 +96,7 @@ void diffuse(std::vector<std::vector<Pixel>>& grid, std::vector<std::vector<Pixe
     grid = next;
 }
 
-void start_diffuse(int width) {
+void start_diffuse(int width, float feed, float kill) {
 
     int rows = 200;
     
@@ -120,6 +121,34 @@ void start_diffuse(int width) {
         else if (IsKeyPressed(KEY_DELETE)) {
             flag = false;
         }
-        diffuse(grid, next);
+        diffuse(grid, next, feed, kill);
     }
+}
+
+void diffusionChoice(int width)
+{
+    Rectangle coral{100.0, 100.0, 250,40};
+    Rectangle mitosis{400.0, 100.0, 250,40};
+    Rectangle test{100.0, 150.0, 250,40};
+
+    bool flag = true;
+    while (flag) {
+        BeginDrawing();
+        ClearBackground(WHITE);
+        
+        if (GuiButton(coral, "Coral")) {
+            start_diffuse(width, 0.055, 0.062);
+            flag = false;
+        }
+        else if (GuiButton(mitosis, "Mitosis")) {
+            start_diffuse(width, 0.0367, 0.0649);
+            flag = false;
+        }
+        else if (GuiButton(test, "test")) {
+            start_diffuse(width, 0.02, 0.058);
+            flag = false;
+        }
+        EndDrawing();
+    }
+    
 }
