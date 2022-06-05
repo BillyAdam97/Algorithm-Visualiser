@@ -34,6 +34,10 @@ int main(void)
     
     while (!WindowShouldClose())
     {
+//        if (width!=800) {
+//            width=800;
+//            SetWindowSize(width, width);
+//        }
         BeginDrawing();
         ClearBackground(WHITE);
         

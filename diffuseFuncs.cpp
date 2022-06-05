@@ -2,16 +2,16 @@
 #include "funcs.hpp"
 #include "raygui.h"
 
-std::vector<std::vector<Pixel>> make_pixels(int width, int height, int rows)
+std::vector<std::vector<std::unique_ptr<Pixel>>> make_pixels(int width, int height, int rows)
 {
     int gap = width/rows;
-    std::vector<std::vector<Pixel>> grid;
-    std::vector<Pixel> line;
+    std::vector<std::vector<std::unique_ptr<Pixel>>> grid;
+    std::vector<std::unique_ptr<Pixel>> line;
     for (int i=0; i<rows; i++) {
         for (int j=0; j<rows; j++) {
-            line.emplace_back(Pixel(i,j,gap));
+            line.emplace_back(std::make_unique<Pixel>(i,j,gap));
         }
-        grid.emplace_back(line);
+        grid.emplace_back(std::move(line));
         line.clear();
     }
     return grid;
@@ -28,57 +28,57 @@ float constain(float num, float low, float high)
     return num;
 }
 
-void drawpixels(std::vector<std::vector<Pixel>>& grid)
+void drawpixels(std::vector<std::vector<std::unique_ptr<Pixel>>>& grid)
 {
     float c;
     for (int i=1; i<grid.size()-1; i++) {
         for (int j=1; j<grid[0].size()-1; j++) {
-            c = (grid[i][j].a-grid[i][j].b)*255;
+            c = (grid[i][j]->a-grid[i][j]->b)*255;
             c = constain(c, 0.0, 255.0);
-            grid[i][j].color.r = c;
-            grid[i][j].color.g = c;
-            grid[i][j].color.b = c;
-            grid[i][j].color.a = 255;
-            grid[i][j].draw();
+            grid[i][j]->color.r = c;
+            grid[i][j]->color.g = c;
+            grid[i][j]->color.b = c;
+            grid[i][j]->color.a = 255;
+            grid[i][j]->draw();
         }
     }
 }
 
-float laplaceA(std::vector<std::vector<Pixel>>& grid, int x, int y)
+float laplaceA(std::vector<std::vector<std::unique_ptr<Pixel>>>& grid, int x, int y)
 {
     float sum=0;
     
-    sum += grid[x][y].a * -1;
-    sum += grid[x-1][y].a * 0.2;
-    sum += grid[x+1][y].a * 0.2;
-    sum += grid[x][y+1].a * 0.2;
-    sum += grid[x][y-1].a * 0.2;
-    sum += grid[x-1][y-1].a * 0.05;
-    sum += grid[x+1][y+1].a * 0.05;
-    sum += grid[x+1][y-1].a * 0.05;
-    sum += grid[x-1][y+1].a * 0.05;
+    sum += grid[x][y]->a * -1;
+    sum += grid[x-1][y]->a * 0.2;
+    sum += grid[x+1][y]->a * 0.2;
+    sum += grid[x][y+1]->a * 0.2;
+    sum += grid[x][y-1]->a * 0.2;
+    sum += grid[x-1][y-1]->a * 0.05;
+    sum += grid[x+1][y+1]->a * 0.05;
+    sum += grid[x+1][y-1]->a * 0.05;
+    sum += grid[x-1][y+1]->a * 0.05;
     
     return sum;
 }
 
-float laplaceB(std::vector<std::vector<Pixel>>& grid, int x, int y)
+float laplaceB(std::vector<std::vector<std::unique_ptr<Pixel>>>& grid, int x, int y)
 {
     float sum=0;
     
-    sum += grid[x][y].b * -1;
-    sum += grid[x-1][y].b * 0.2;
-    sum += grid[x+1][y].b * 0.2;
-    sum += grid[x][y+1].b * 0.2;
-    sum += grid[x][y-1].b * 0.2;
-    sum += grid[x-1][y-1].b * 0.05;
-    sum += grid[x+1][y+1].b * 0.05;
-    sum += grid[x+1][y-1].b * 0.05;
-    sum += grid[x-1][y+1].b * 0.05;
+    sum += grid[x][y]->b * -1;
+    sum += grid[x-1][y]->b * 0.2;
+    sum += grid[x+1][y]->b * 0.2;
+    sum += grid[x][y+1]->b * 0.2;
+    sum += grid[x][y-1]->b * 0.2;
+    sum += grid[x-1][y-1]->b * 0.05;
+    sum += grid[x+1][y+1]->b * 0.05;
+    sum += grid[x+1][y-1]->b * 0.05;
+    sum += grid[x-1][y+1]->b * 0.05;
     
     return sum;
 }
 
-void diffuse(std::vector<std::vector<Pixel>>& grid, std::vector<std::vector<Pixel>>& next, float feed, float k)
+void diffuse(std::vector<std::vector<std::unique_ptr<Pixel>>>& grid, std::vector<std::vector<std::unique_ptr<Pixel>>>& next, float feed, float k)
 {
     
     float dA = 1.0;
@@ -89,22 +89,23 @@ void diffuse(std::vector<std::vector<Pixel>>& grid, std::vector<std::vector<Pixe
 //    float k = 0.062;
     for (int i=1; i<grid.size()-1; i++) {
         for (int j=1; j<grid[0].size()-1; j++) {
-            next[i][j].a = constain(grid[i][j].a + dA*laplaceA(grid,i,j)-grid[i][j].a*grid[i][j].b*grid[i][j].b + feed*(1-grid[i][j].a), 0.0, 1.0);
-            next[i][j].b = constain(grid[i][j].b + dB*laplaceB(grid,i,j)+grid[i][j].a*grid[i][j].b*grid[i][j].b - (k+feed)*grid[i][j].b, 0.0, 1.0);
+            next[i][j]->a = constain(grid[i][j]->a + dA*laplaceA(grid,i,j)-grid[i][j]->a*grid[i][j]->b*grid[i][j]->b + feed*(1-grid[i][j]->a), 0.0, 1.0);
+            next[i][j]->b = constain(grid[i][j]->b + dB*laplaceB(grid,i,j)+grid[i][j]->a*grid[i][j]->b*grid[i][j]->b - (k+feed)*grid[i][j]->b, 0.0, 1.0);
         }
     }
-    grid = next;
+//    grid = next;
+    grid.swap(next);
 }
 
 void start_diffuse(int width, float feed, float kill) {
 
     int rows = 200;
     
-    std::vector<std::vector<Pixel>> grid = make_pixels(width,width,rows);
-    std::vector<std::vector<Pixel>> next = grid;
+    std::vector<std::vector<std::unique_ptr<Pixel>>> grid = make_pixels(width,width,rows);
+    std::vector<std::vector<std::unique_ptr<Pixel>>> next = make_pixels(width, width, rows);
     Vector2 mouse;
     std::pair<int,int>rowcol;
-    SetTargetFPS(60);
+    SetTargetFPS(120);
     bool flag = true;
     while (flag) {
         BeginDrawing();
@@ -116,7 +117,7 @@ void start_diffuse(int width, float feed, float kill) {
             mouse = GetMousePosition();
             correct_bound(mouse, width, width);
             rowcol = get_clicked(mouse, rows, width);
-            grid[rowcol.second][rowcol.first].b = 1.0;
+            grid[rowcol.second][rowcol.first]->b = 1.0;
         }
         else if (IsKeyPressed(KEY_DELETE)) {
             flag = false;
@@ -145,7 +146,8 @@ void diffusionChoice(int width)
             flag = false;
         }
         else if (GuiButton(test, "test")) {
-            start_diffuse(width, 0.02, 0.058);
+            //0.02, 0.058
+            start_diffuse(width, 0.06100, 0.06264);
             flag = false;
         }
         EndDrawing();

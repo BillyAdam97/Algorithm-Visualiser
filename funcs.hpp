@@ -16,6 +16,7 @@ double h(std::shared_ptr<Square> a, std::shared_ptr<Square> b);
 std::vector<std::vector<std::shared_ptr<Square>>> make_Squares(int rows, int width);
 void draw(std::vector<std::vector<std::shared_ptr<Square>>>& grid, int rows, int width);
 void constructPath(std::vector<std::vector<std::shared_ptr<Square>>>& grid, std::unordered_map<int, std::shared_ptr<Square>>& came_from, std::shared_ptr<Square> end);
+void randomWalls(std::vector<std::vector<std::shared_ptr<Square>>>& grid);
 
 //Utility - All
 void draw_grid(int rows, int width);

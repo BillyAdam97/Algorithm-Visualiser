@@ -1,5 +1,4 @@
 #include "funcs.hpp"
-#include <iostream>
 #include "raygui.h"
 
 //Utility
@@ -159,8 +158,22 @@ void constructPath(std::vector<std::vector<std::shared_ptr<Square>>>& grid, std:
         curr = came_from[curr->index];
         curr->setPath();
         BeginDrawing();
-        draw(grid, 40, 800);
+        draw(grid, grid.size(), 1000);
         EndDrawing();
+    }
+}
+
+void randomWalls(std::vector<std::vector<std::shared_ptr<Square>>>& grid)
+{
+    int k;
+    int p;
+    std::srand(time(0));
+    for (int i=0; i<100; i++) {
+        k = rand()%grid.size();
+        p = rand()%grid.size();
+        if (grid[k][p]->isStart()==false && grid[k][p]->isEnd()==false) {
+            grid[k][p]->setBarrier();
+        }
     }
 }
 
@@ -241,7 +254,7 @@ bool algorithm(std::vector<std::vector<std::shared_ptr<Square>>>& grid, std::sha
         }
         //Once the loop for has finished the grid is drawn
         BeginDrawing();
-        draw(grid, 40, 800);
+        draw(grid, grid.size(), 1000);
         EndDrawing();
         
         if (*curr!=*start) {
@@ -254,8 +267,9 @@ bool algorithm(std::vector<std::vector<std::shared_ptr<Square>>>& grid, std::sha
 
 void start_astar(int width) {
     //set up of A star algorithm (setting start and end positions and barriers)
-    
     int rows = 40;
+    bool out = false;
+    bool in = true;
     std::vector<std::vector<std::shared_ptr<Square>>> grid = make_Squares(rows, width);
     Vector2 mousepos = { 0.0f, 0.0f };
     int row;
@@ -335,6 +349,34 @@ void start_astar(int width) {
             endnode = nullptr;
             end = false;
         }
+        else if (IsKeyPressed(KEY_W)) {
+            randomWalls(grid);
+        }
+        else if (IsKeyPressed(KEY_EQUAL)) {
+            if (!out) {
+                rows += 40;
+                grid = make_Squares(rows, width);
+                startnode = nullptr;
+                start = false;
+                endnode = nullptr;
+                end = false;
+                out = true;
+                in = false;
+            }
+        }
+        else if (IsKeyPressed(KEY_MINUS)) {
+            if (!in) {
+                rows -= 40;
+                grid = make_Squares(rows, width);
+                startnode = nullptr;
+                start = false;
+                endnode = nullptr;
+                end = false;
+                in = true;
+                out = false;
+            }
+            
+        }
     }
             
 }
@@ -384,7 +426,7 @@ bool dijkstras(std::vector<std::vector<std::shared_ptr<Square>>>& grid, std::sha
             }
         }
         BeginDrawing();
-        draw(grid, 40, 800);
+        draw(grid, grid.size(), 800);
         EndDrawing();
         if (*curr!=*start) {
             curr->setClosed();
@@ -468,6 +510,9 @@ void start_dijkstra(int width) {
             start = false;
             endnode = nullptr;
             end = false;
+        }
+        else if (IsKeyPressed(KEY_W)) {
+            randomWalls(grid);
         }
     }
 }
