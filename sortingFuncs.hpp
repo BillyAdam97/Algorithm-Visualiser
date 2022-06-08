@@ -7,6 +7,10 @@
 #include <random>
 #include <ctime>
 
+//All
+void chooseSort(int& width, int& height);
+void sortControls(int& width, int&height);
+
 //Utility
 std::vector<std::shared_ptr<Bar>> make_list(int columns, int width, int height);
 void draw(std::vector<std::shared_ptr<Bar>>& alist);

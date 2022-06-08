@@ -1,4 +1,5 @@
 #include "sortingFuncs.hpp"
+#include "raygui.h"
 
 std::vector<std::shared_ptr<Bar>> make_list(int columns, int width, int height) {
     std::vector<std::shared_ptr<Bar>> alist;
@@ -14,6 +15,78 @@ void drawBars(std::vector<std::shared_ptr<Bar>>& alist) {
     ClearBackground(WHITE);
     for (int i=0; i<alist.size(); i++) {
         alist[i]->draw();
+    }
+}
+
+void chooseSort(int& width, int& height)
+{
+    SetMousePosition(100, 100);
+    Rectangle bubbleB{275.0, 100.0, 250, 40};
+    Rectangle quickB{275.0, 150.0, 250, 40};
+    Rectangle mergeB{275.0, 200.0, 250, 40};
+    Rectangle selectionB{275.0, 250.0, 250,40};
+    Rectangle controls{275.0, 300.0, 250, 40};
+    Rectangle back{275.0, 350.0, 250, 40};
+    
+    bool flag = true;
+    
+    while (flag) {
+        if (height!=450) {
+            height=450;
+            SetWindowSize(width, height);
+        }
+        BeginDrawing();
+        ClearBackground(WHITE);
+        
+        if (GuiButton(bubbleB, "Bubble Sort")) {
+            height = 800;
+            SetWindowSize(width, height);
+            start_bubble();
+        }
+        else if (GuiButton(quickB, "Quick Sort")) {
+            height = 800;
+            SetWindowSize(width, height);
+            start_quicksort();
+        }
+        else if (GuiButton(mergeB, "Merge Sort")) {
+            height = 800;
+            SetWindowSize(width, height);
+            start_merge();
+        }
+        else if (GuiButton(selectionB, "Selection Sort")) {
+            height = 800;
+            SetWindowSize(width, height);
+            start_selection();
+        }
+        else if (GuiButton(controls, "Controls")) {
+            sortControls(width, height);
+        }
+        else if (GuiButton(back, "Back")) {
+            flag = false;
+        }
+        EndDrawing();
+    }
+}
+
+void sortControls(int& width, int& height)
+{
+    bool flag = true;
+    Rectangle back{275.0, 250.0, 250,40};
+    while (flag) {
+        if (height!=350) {
+            height = 350;
+            SetWindowSize(width,height);
+        }
+        BeginDrawing();
+        ClearBackground(WHITE);
+        DrawText("R - Make a new list of unsorted values.", 20, 100, 20, BLACK);
+        DrawText("Delete - Exits out of algorithm.", 20, 150, 20, BLACK);
+        DrawText("SpaceBar - Starts the algorithm.", 20, 200, 20, BLACK);
+        if (GuiButton(back, "Back")) {
+            flag = false;
+        }
+        
+        EndDrawing();
     }
 }
 

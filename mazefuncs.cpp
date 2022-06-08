@@ -1,4 +1,5 @@
 #include "mazefuncs.hpp"
+#include "raygui.h"
 
 void removeWalls(std::shared_ptr<Cell>& cell1, std::shared_ptr<Cell>& cell2) {
     
@@ -86,5 +87,64 @@ void mazealgorithm(int width) {
         if (IsKeyPressed(KEY_DELETE)) {
             flag = false;
         }
+    }
+}
+
+void chooseMisc(int& width, int& height)
+{
+    SetMousePosition(100, 100);
+    Rectangle mazeB{275.0, 100.0, 250, 40};
+    Rectangle diffuseB{275.0, 150.0, 250, 40};
+    Rectangle controls{275.0, 200.0, 250, 40};
+    Rectangle back{275.0, 250.0, 250, 40};
+    
+    bool flag = true;
+    
+    while (flag) {
+        if (height!=350) {
+            height = 350;
+            SetWindowSize(width, height);
+        }
+        
+        BeginDrawing();
+        ClearBackground(WHITE);
+        
+        if (GuiButton(mazeB, "Maze Generation")) {
+            height = 800;
+            SetWindowSize(width, height);
+            mazealgorithm(width);
+        }
+        else if (GuiButton(diffuseB, "Reaction Diffusion")) {
+            diffusionChoice(width, height);
+        }
+        else if (GuiButton(controls, "Controls")) {
+            miscControls(width, height);
+        }
+        else if (GuiButton(back, "Back")) {
+            flag = false;
+        }
+        EndDrawing();
+    }
+}
+
+void miscControls(int& width, int& height)
+{
+    bool flag = true;
+    Rectangle back{275.0, 250.0, 250,40};
+    while (flag) {
+        if (height!=350) {
+            height = 350;
+            SetWindowSize(width, height);
+        }
+        BeginDrawing();
+        ClearBackground(WHITE);
+        DrawText("Delete - Exits out of algorithm.", 20, 100, 20, BLACK);
+        DrawText("Reaction Diffusion", 20, 150, 30, BLACK);
+        DrawText("Left Click - Adds 'Chemical' to the canvas.", 20, 200, 20, BLACK);
+        if (GuiButton(back, "Back")) {
+            flag = false;
+        }
+        
+        EndDrawing();
     }
 }

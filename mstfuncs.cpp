@@ -1,4 +1,5 @@
 #include "mstfuncs.hpp"
+#include "raygui.h"
 
 void drawGraph(std::vector<std::shared_ptr<Node>>& nodes)
 {
@@ -172,5 +173,61 @@ void start_prims()
         if (IsKeyPressed(KEY_DELETE)) {
             loop = false;
         }
+    }
+}
+
+void chooseMST(int& width, int& height)
+{
+    SetMousePosition(100, 100);
+    Rectangle primsB{275.0, 100.0, 250, 40};
+    Rectangle controls{275.0, 150.0, 250, 40};
+    Rectangle back{275.0, 200.0, 250, 40};
+    
+    bool flag = true;
+    
+    while (flag) {
+        if (height!=300) {
+            height = 300;
+            SetWindowSize(width, height);
+        }
+        BeginDrawing();
+        ClearBackground(WHITE);
+        
+        if (GuiButton(primsB, "Prims MST")) {
+            height = 800;
+            SetWindowSize(width, height);
+            start_prims();
+        }
+        else if (GuiButton(controls, "Controls")) {
+            mstControls(width, height);
+        }
+        else if (GuiButton(back, "Back")) {
+            flag = false;
+        }
+        EndDrawing();
+    }
+}
+
+void mstControls(int& width, int& height)
+{
+    bool flag = true;
+    Rectangle back{275.0, 350.0, 250,40};
+    while (flag) {
+        if (height!=450) {
+            height = 450;
+            SetWindowSize(width, height);
+        }
+        BeginDrawing();
+        ClearBackground(WHITE);
+        DrawText("Left Click - Create new nodes by clicking, then drag and dropping in place.", 20, 100, 20, BLACK);
+        DrawText("Left Click is also used to connect two node together, click one then the other to create an egde.", 20, 150, 20, BLACK);
+        DrawText("R - Clear screen.", 20, 200, 20, BLACK);
+        DrawText("Delete - Exits out of algorithm.", 20, 250, 20, BLACK);
+        DrawText("SpaceBar - Starts the algorithm.", 20, 300, 20, BLACK);
+        if (GuiButton(back, "Back")) {
+            flag = false;
+        }
+        
+        EndDrawing();
     }
 }

@@ -10,5 +10,5 @@ float laplaceA(std::vector<std::vector<std::unique_ptr<Pixel>>>& grid, int x, in
 float laplaceB(std::vector<std::vector<std::unique_ptr<Pixel>>>& grid, int x, int y);
 float constain(float num, float low, float high);
 void start_diffuse(int width, float feed, float kill);
-void diffusionChoice(int width);
+void diffusionChoice(int& width, int& height);
 #endif /* diffuseFuncs_hpp */

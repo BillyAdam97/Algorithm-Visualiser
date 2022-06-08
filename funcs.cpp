@@ -158,7 +158,7 @@ void constructPath(std::vector<std::vector<std::shared_ptr<Square>>>& grid, std:
         curr = came_from[curr->index];
         curr->setPath();
         BeginDrawing();
-        draw(grid, grid.size(), 1000);
+        draw(grid, grid.size(), 800 );
         EndDrawing();
     }
 }
@@ -252,9 +252,9 @@ bool algorithm(std::vector<std::vector<std::shared_ptr<Square>>>& grid, std::sha
             }
             
         }
-        //Once the loop for has finished the grid is drawn
+        //Once the loop has finished the grid is drawn
         BeginDrawing();
-        draw(grid, grid.size(), 1000);
+        draw(grid, grid.size(), 800);
         EndDrawing();
         
         if (*curr!=*start) {
@@ -331,7 +331,7 @@ void start_astar(int width) {
                 grid[col][row]->reset();
             }
         }
-        if (IsKeyPressed(KEY_SPACE) and !started) {
+        if (IsKeyPressed(KEY_SPACE) and start and end) {
             for (int i=0; i<grid.size(); i++) {
                 for (int j=0; j<grid[0].size(); j++) {
                     grid[i][j]->updateNeighbours(grid);
@@ -437,7 +437,8 @@ bool dijkstras(std::vector<std::vector<std::shared_ptr<Square>>>& grid, std::sha
 
 void start_dijkstra(int width) {
     //Set up of Dijkstras (setting start and end positions and barriers)
-    
+    bool out = false;
+    bool in = true;
     bool flag = true;
     int rows = 40;
     std::vector<std::vector<std::shared_ptr<Square>>> grid = make_Squares(rows, width);
@@ -493,7 +494,7 @@ void start_dijkstra(int width) {
                 grid[col][row]->reset();
             }
         }
-        if (IsKeyPressed(KEY_SPACE)) {
+        if (IsKeyPressed(KEY_SPACE) and start and end) {
             for (int i=0; i<grid.size(); i++) {
                 for (int j=0; j<grid[0].size(); j++) {
                     grid[i][j]->updateNeighbours(grid);
@@ -514,6 +515,167 @@ void start_dijkstra(int width) {
         else if (IsKeyPressed(KEY_W)) {
             randomWalls(grid);
         }
+        else if (IsKeyPressed(KEY_EQUAL)) {
+            if (!out) {
+                rows += 40;
+                grid = make_Squares(rows, width);
+                startnode = nullptr;
+                start = false;
+                endnode = nullptr;
+                end = false;
+                out = true;
+                in = false;
+            }
+        }
+        else if (IsKeyPressed(KEY_MINUS)) {
+            if (!in) {
+                rows -= 40;
+                grid = make_Squares(rows, width);
+                startnode = nullptr;
+                start = false;
+                endnode = nullptr;
+                end = false;
+                in = true;
+                out = false;
+            }
+        }
+    }
+}
+
+void psaControls(int& width, int& height)
+{
+    bool flag = true;
+    Rectangle back{275.0, 500.0, 250,40};
+    while (flag) {
+        if (height != 600) {
+            height = 600;
+            SetWindowSize(width, height);
+        }
+        BeginDrawing();
+        ClearBackground(WHITE);
+        DrawText("Left Click - Places blocks. The first two blocks will be the start (Orange)", 20, 100, 20, BLACK);
+        DrawText("and the end (Brown). Once start and end blocks are placed, walls (Black)", 20, 125, 20, BLACK);
+        DrawText("are placed instead.", 20, 150, 20, BLACK);
+        DrawText("Right Click - Deletes blocks.", 20, 200, 20, BLACK);
+        DrawText("R - Makes a brand new grid.", 20, 250, 20, BLACK);
+        DrawText("W - Places random wall blocks on the grid.", 20, 300, 20, BLACK);
+        DrawText("= - Increase size of grid.", 20, 350, 20, BLACK);
+        DrawText("Minus (-) - Decrease size of grid.", 20, 400, 20, BLACK);
+        DrawText("SpaceBar - Starts the algorithm.", 20, 450, 20, BLACK);
+        
+        if (GuiButton(back, "Back")) {
+            flag = false;
+        }
+        
+        EndDrawing();
+    }
+}
+
+void choosePSA(int& width, int& height)
+{
+    
+    SetMousePosition(100, 100);
+    Rectangle astarB{275.0, 50.0, 250,40};
+    Rectangle dijkB{275.0, 100.0, 250,40};
+    Rectangle controls{275.0, 150.0, 250,40};
+    Rectangle back{275.0, 200.0, 250,40};
+    bool flag = true;
+    
+    while (flag) {
+        if (height != 300) {
+            height = 300;
+            SetWindowSize(width, height);
+        }
+        BeginDrawing();
+        ClearBackground(WHITE);
+
+        if (GuiButton(astarB, "A* Algorithm")) {
+            height = 800;
+            SetWindowSize(width, height);
+            start_astar(width);
+        }
+        else if (GuiButton(dijkB, "Dijkstras")) {
+            height = 800;
+            SetWindowSize(width, height);
+            start_dijkstra(width);
+        }
+        else if (GuiButton(controls, "Controls")) {
+            psaControls(width, height);
+        }
+        else if (GuiButton(back, "Back")) {
+            flag = false;
+        }
+        EndDrawing();
+    }
+}
+
+void caControls(int& width, int& height)
+{
+    bool flag = true;
+    Rectangle back{275.0, 450.0, 250,40};
+    while (flag) {
+        if (height != 550) {
+            height = 550;
+            SetWindowSize(width, height);
+        }
+        BeginDrawing();
+        ClearBackground(WHITE);
+        DrawText("Game of Life and Wolfams", 20, 100, 30, BLACK);
+        DrawText("Left Click - Places blocks.", 20, 150, 20, BLACK);
+        DrawText("Right Click - Deletes blocks.", 20, 200, 20, BLACK);
+        DrawText("R - Makes a brand new grid.", 20, 250, 20, BLACK);
+        DrawText("All Algorithms", 20, 350, 20, BLACK);
+        DrawText("SpaceBar - Starts the algorithm.", 20, 400, 20, BLACK);
+        
+        if (GuiButton(back, "Back")) {
+            flag = false;
+        }
+        
+        EndDrawing();
+    }
+}
+
+void chooseCA(int& width, int& height)
+{
+    SetMousePosition(100, 100);
+    Rectangle gol{275.0, 100.0, 250, 40};
+    Rectangle wolfamB{275.0, 150.0, 250, 40};
+    Rectangle mapGenB{275.0, 200.0, 250, 40};
+    Rectangle controls{275.0, 250.0, 250,40};
+    Rectangle back{275.0, 300.0, 250, 40};
+    
+    bool flag = true;
+    
+    while (flag) {
+        if (height != 400) {
+            height = 400;
+            SetWindowSize(width, height);
+        }
+        BeginDrawing();
+        ClearBackground(WHITE);
+        
+        if (GuiButton(gol, "Game of Life!")) {
+            height = 800;
+            SetWindowSize(width, height);
+            start_gol(width);
+        }
+        else if (GuiButton(wolfamB, "Wolfam's CA")) {
+            height = 800;
+            SetWindowSize(width, height);
+            choose_rule(width);
+        }
+        else if (GuiButton(mapGenB, "Map Generation")) {
+            height = 800;
+            SetWindowSize(width, height);
+            start_MapG(width);
+        }
+        else if (GuiButton(controls, "Controls")) {
+            caControls(width, height);
+        }
+        else if (GuiButton(back, "Back")) {
+            flag = false;
+        }
+        EndDrawing();
     }
 }
 
@@ -529,9 +691,7 @@ void ruleCA(std::vector<std::vector<std::shared_ptr<Entity>>>& grid, int rows, i
         draw(grid, rows, width);
         EndDrawing();
         for (int i=1; i<grid[ind].size()-1; i++) {
-            //grid[ind][i]->wolfamCount(grid, ind);
             temp[i] = rules(grid[i-1][ind]->isWall(), grid[i][ind]->isWall(), grid[i+1][ind]->isWall(), rule);
-            
         }
         for (int i=0; i<temp.size(); i++) {
             if (temp[i]) {
@@ -761,8 +921,8 @@ void gameoflife(std::vector<std::vector<std::shared_ptr<Entity>>>& grid, int row
     
     SetTargetFPS(20);
     std::vector<std::vector<bool>> temp(grid.size(),std::vector<bool>(grid[0].size()));
-    bool flag = false;
-    while (!flag) {
+    bool flag = true;
+    while (flag) {
         BeginDrawing();
         draw(grid, rows, width);
         EndDrawing();
@@ -798,7 +958,7 @@ void gameoflife(std::vector<std::vector<std::shared_ptr<Entity>>>& grid, int row
             }
         }
         if (IsKeyPressed(KEY_DELETE)) {
-            flag = true;
+            flag = false;
         }
     }
 }
@@ -847,6 +1007,7 @@ void start_gol(int width) {
         else if (IsKeyPressed(KEY_R)) {
             grid = make_Entities(rows, width);
         }
+
     }
 }
 
@@ -940,7 +1101,7 @@ void map_gen(std::vector<std::vector<std::unique_ptr<Tile>>>& grid, int count) {
             }
         }
         BeginDrawing();
-        draw(grid, 100, 800);
+        draw(grid, grid.size(), 800);
         EndDrawing();
     }
 }

@@ -11,6 +11,12 @@
 #include "Entity.hpp"
 #include <array>
 
+//Choice menus
+void choosePSA(int& width, int& height);
+void chooseCA(int& width, int& height);
+void psaControls(int& width, int& height);
+void caControls(int& width, int& height);
+
 //Utility - A Star & Dijkstras
 double h(std::shared_ptr<Square> a, std::shared_ptr<Square> b);
 std::vector<std::vector<std::shared_ptr<Square>>> make_Squares(int rows, int width);

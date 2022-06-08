@@ -126,28 +126,40 @@ void start_diffuse(int width, float feed, float kill) {
     }
 }
 
-void diffusionChoice(int width)
+void diffusionChoice(int& width, int& height)
 {
     Rectangle coral{100.0, 100.0, 250,40};
     Rectangle mitosis{400.0, 100.0, 250,40};
     Rectangle test{100.0, 150.0, 250,40};
+    Rectangle back{275.0, 200, 250, 40};
 
     bool flag = true;
     while (flag) {
+        if (height!=300) {
+            height = 300;
+            SetWindowSize(width, height);
+        }
+        
         BeginDrawing();
         ClearBackground(WHITE);
         
         if (GuiButton(coral, "Coral")) {
+            height = 800;
+            SetWindowSize(width, height);
             start_diffuse(width, 0.055, 0.062);
-            flag = false;
         }
         else if (GuiButton(mitosis, "Mitosis")) {
+            height = 800;
+            SetWindowSize(width, height);
             start_diffuse(width, 0.0367, 0.0649);
-            flag = false;
         }
         else if (GuiButton(test, "test")) {
             //0.02, 0.058
+            height = 800;
+            SetWindowSize(width, height);
             start_diffuse(width, 0.06100, 0.06264);
+        }
+        else if (GuiButton(back, "Back")) {
             flag = false;
         }
         EndDrawing();

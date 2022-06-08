@@ -11,83 +11,55 @@
 int main(void)
 {
     int width = 800;
+    int height = 300;
     
     //Buttons
-    Rectangle astarB{100.0, 100.0, 250,40};
-    Rectangle dijkB{100.0, 150.0, 250,40};
-    Rectangle golB{100.0, 200.0, 250,40};
-    Rectangle bubbleB{400.0, 100.0, 250,40};
-    Rectangle quickB{400.0, 150.0, 250,40};
-    Rectangle mergeB{400.0, 200.0, 250,40};
-    Rectangle mazeB{100.0, 250.0, 250,40};
-    Rectangle selectionB{400.0, 250.0, 250,40};
-    Rectangle linearB{100.0, 300.0, 250,40};
-    Rectangle binaryB{400.0, 300.0, 250,40};
-    Rectangle mapgB{100.0, 350.0, 250,40};
-    Rectangle diffuseB{400.0, 350.0, 250,40};
-    Rectangle primsB{100.0, 400.0, 250,40};
-    Rectangle wolfamB{400.0, 400.0, 250,40};
+    Rectangle psaB{100.0, 100.0, 250,40};
+    Rectangle caB{100.0, 150.0, 250,40};
     
-    InitWindow(width, width, "Algorithm Visualiser");
+    Rectangle searchB{400.0, 100.0, 250,40};
+    
+    Rectangle mazeB{100.0, 200.0, 250,40};
+    
+    Rectangle linearB{400.0, 150.0, 250,40};
+    
+    Rectangle primsB{400.0, 200.0, 250,40};
+    
+    InitWindow(width, height, "Algorithm Visualiser");
     SetTargetFPS(60);
     GuiSetStyle(DEFAULT, TEXT_SIZE, 20);
     
     while (!WindowShouldClose())
     {
-//        if (width!=800) {
-//            width=800;
-//            SetWindowSize(width, width);
-//        }
+        if (height!=300) {
+            height=300;
+            SetWindowSize(width, height);
+        }
         BeginDrawing();
         ClearBackground(WHITE);
         
         //Options
         DrawText("Pick an Algorithm", 175, 25, 50, BLACK);
 
-        if (GuiButton(astarB, "A Star!")) {
-            start_astar(width);
+        if (GuiButton(psaB, "Path Finding")) {
+            choosePSA(width, height);
         }
-        else if (GuiButton(dijkB, "Dijkstras!")) {
-            start_dijkstra(width);
+        else if (GuiButton(caB, "Cellular Automata")) {
+            chooseCA(width, height);
         }
-        else if (GuiButton(golB, "Game Of Life!")) {
-            start_gol(width);
+        else if (GuiButton(searchB, "Sorting")) {
+            chooseSort(width, height);
         }
-        else if (GuiButton(bubbleB, "Bubble Sort!")) {
-            start_bubble();
+        else if (GuiButton(mazeB, "Miscellaneous")) {
+            chooseMisc(width, height);
         }
-        else if (GuiButton(quickB, "Quick Sort!")) {
-            start_quicksort();
+        else if (GuiButton(linearB, "Searching")) {
+            chooseSearch(width, height);
         }
-        else if (GuiButton(mergeB, "Merge Sort!")) {
-            start_merge();
+        else if (GuiButton(primsB, "Mininal Spanning Tree")) {
+            chooseMST(width, height);
         }
-        else if (GuiButton(mazeB, "Maze Generator!")) {
-            mazealgorithm(width);
-        }
-        else if (GuiButton(selectionB, "Selection Sort!")) {
-            start_selection();
-        }
-        else if (GuiButton(linearB, "Linear Search!")) {
-            startLinear(width);
-        }
-        else if (GuiButton(binaryB, "Binary Search!")) {
-            startBinary(width);
-        }
-        else if (GuiButton(mapgB, "Map Generator!")) {
-            start_MapG(width);
-        }
-        else if (GuiButton(diffuseB, "Reaction Diffusion!")) {
-            //start_diffuse(width);
-            diffusionChoice(width);
-        }
-        else if (GuiButton(primsB, "Prims Min Spanning Tree!")) {
-            start_prims();
-        }
-        else if (GuiButton(wolfamB, "Wolfams CA!")) {
-            //start_r30(width);
-            choose_rule(width);
-        }
+        
         EndDrawing();
     }
     

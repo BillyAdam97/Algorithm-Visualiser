@@ -1,4 +1,5 @@
 #include "searchFuncs.hpp"
+#include "raygui.h"
 
 std::vector<std::shared_ptr<Bar>> makeSorted(int columns, int width, int height)
 {
@@ -134,5 +135,66 @@ void startBinary(int width)
         else if (IsKeyPressed(KEY_DELETE)) {
             flag = false;
         }
+    }
+}
+
+void chooseSearch(int& width, int& height)
+{
+    SetMousePosition(100, 100);
+    Rectangle linearB{275.0, 100.0, 250, 40};
+    Rectangle binaryB{275.0, 150.0, 250, 40};
+    Rectangle controls{275.0, 200.0, 250, 40};
+    Rectangle back{275.0, 250.0, 250, 40};
+    
+    bool flag = true;
+    
+    while (flag) {
+        if (height!=350) {
+            height=350;
+            SetWindowSize(width, height);
+        }
+        BeginDrawing();
+        ClearBackground(WHITE);
+        
+        if (GuiButton(linearB, "Linear Search")) {
+            height = 800;
+            SetWindowSize(width, height);
+            startLinear(width);
+        }
+        else if (GuiButton(binaryB, "Binary Search")) {
+            height = 800;
+            SetWindowSize(width, height);
+            startBinary(width);
+        }
+        else if (GuiButton(controls, "Controls")) {
+            searchControls(width, height);
+        }
+        else if (GuiButton(back, "Back")) {
+            flag = false;
+        }
+        EndDrawing();
+    }
+}
+
+void searchControls(int& width, int& height)
+{
+    bool flag = true;
+    Rectangle back{275.0, 300.0, 250,40};
+    while (flag) {
+        if (height!=400) {
+            height = 400;
+            SetWindowSize(width, height);
+        }
+        BeginDrawing();
+        ClearBackground(WHITE);
+        DrawText("Left Click - Highlights the value to look for.", 20, 100, 20, BLACK);
+        DrawText("R - Make a new list.", 20, 150, 20, BLACK);
+        DrawText("Delete - Exits out of algorithm.", 20, 200, 20, BLACK);
+        DrawText("SpaceBar - Starts the algorithm.", 20, 250, 20, BLACK);
+        if (GuiButton(back, "Back")) {
+            flag = false;
+        }
+        
+        EndDrawing();
     }
 }
