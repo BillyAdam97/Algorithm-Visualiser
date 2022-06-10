@@ -5,6 +5,7 @@ Currently implemented:
 - A Star
 - Dijkstras
 - Game of Life
+- Wolfams CA
 - Bubble Sort
 - Selection Sort
 - Merge Sort
