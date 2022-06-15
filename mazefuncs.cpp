@@ -92,35 +92,36 @@ void mazealgorithm(int width) {
 
 void chooseMisc(int& width, int& height)
 {
-    SetMousePosition(100, 100);
-    Rectangle mazeB{275.0, 100.0, 250, 40};
-    Rectangle diffuseB{275.0, 150.0, 250, 40};
-    Rectangle controls{275.0, 200.0, 250, 40};
-    Rectangle back{275.0, 250.0, 250, 40};
+    
+    Rectangle mazeB{(float)((width/2)-200.0), 100.0, 400, 75};
+    Rectangle diffuseB{(float)((width/2)-200.0), 200.0, 400, 75};
+    Rectangle controls{(float)((width/2)-200.0), 300.0, 400, 75};
+    Rectangle back{(float)((width/2)-200.0), 400.0, 400, 75};
     
     bool flag = true;
+    bool click = false;
     
     while (flag) {
-        if (height!=350) {
-            height = 350;
-            SetWindowSize(width, height);
-        }
-        
         BeginDrawing();
         ClearBackground(WHITE);
         
-        if (GuiButton(mazeB, "Maze Generation")) {
-            height = 800;
-            SetWindowSize(width, height);
+        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+            click = true;
+        }
+        
+        if (GuiButton(mazeB, "Maze Generation") && click) {
             mazealgorithm(width);
+            click = false;
         }
-        else if (GuiButton(diffuseB, "Reaction Diffusion")) {
+        else if (GuiButton(diffuseB, "Reaction Diffusion") && click) {
             diffusionChoice(width, height);
+            click = false;
         }
-        else if (GuiButton(controls, "Controls")) {
+        else if (GuiButton(controls, "Controls") && click) {
             miscControls(width, height);
+            click = false;
         }
-        else if (GuiButton(back, "Back")) {
+        else if (GuiButton(back, "Back") && click) {
             flag = false;
         }
         EndDrawing();
@@ -132,10 +133,6 @@ void miscControls(int& width, int& height)
     bool flag = true;
     Rectangle back{275.0, 250.0, 250,40};
     while (flag) {
-        if (height!=350) {
-            height = 350;
-            SetWindowSize(width, height);
-        }
         BeginDrawing();
         ClearBackground(WHITE);
         DrawText("Delete - Exits out of algorithm.", 20, 100, 20, BLACK);

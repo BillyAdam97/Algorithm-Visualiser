@@ -20,48 +20,48 @@ void drawBars(std::vector<std::shared_ptr<Bar>>& alist) {
 
 void chooseSort(int& width, int& height)
 {
-    SetMousePosition(100, 100);
-    Rectangle bubbleB{275.0, 100.0, 250, 40};
-    Rectangle quickB{275.0, 150.0, 250, 40};
-    Rectangle mergeB{275.0, 200.0, 250, 40};
-    Rectangle selectionB{275.0, 250.0, 250,40};
-    Rectangle controls{275.0, 300.0, 250, 40};
-    Rectangle back{275.0, 350.0, 250, 40};
+//    SetMousePosition(100, 100);
+    bool click = false;
+    
+    Rectangle bubbleB{(float)((width/2)-200.0), 100.0, 400, 75};
+    Rectangle quickB{(float)((width/2)-200.0), 200.0, 400, 75};
+    Rectangle mergeB{(float)((width/2)-200.0), 300.0, 400, 75};
+    Rectangle selectionB{(float)((width/2)-200.0), 400.0, 400,75};
+    Rectangle controls{(float)((width/2)-200.0), 500.0, 400, 75};
+    Rectangle back{(float)((width/2)-200.0), 600.0, 400, 75};
     
     bool flag = true;
     
     while (flag) {
-        if (height!=450) {
-            height=450;
-            SetWindowSize(width, height);
-        }
+
         BeginDrawing();
         ClearBackground(WHITE);
         
-        if (GuiButton(bubbleB, "Bubble Sort")) {
-            height = 800;
-            SetWindowSize(width, height);
+        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+            click = true;
+        }
+        
+        if (GuiButton(bubbleB, "Bubble Sort") && click) {
             start_bubble();
+            click = false;
         }
-        else if (GuiButton(quickB, "Quick Sort")) {
-            height = 800;
-            SetWindowSize(width, height);
+        else if (GuiButton(quickB, "Quick Sort") && click) {
             start_quicksort();
+            click = false;
         }
-        else if (GuiButton(mergeB, "Merge Sort")) {
-            height = 800;
-            SetWindowSize(width, height);
+        else if (GuiButton(mergeB, "Merge Sort") && click) {
             start_merge();
+            click = false;
         }
-        else if (GuiButton(selectionB, "Selection Sort")) {
-            height = 800;
-            SetWindowSize(width, height);
+        else if (GuiButton(selectionB, "Selection Sort") && click) {
             start_selection();
+            click = false;
         }
-        else if (GuiButton(controls, "Controls")) {
+        else if (GuiButton(controls, "Controls") && click) {
             sortControls(width, height);
+            click = false;
         }
-        else if (GuiButton(back, "Back")) {
+        else if (GuiButton(back, "Back") && click) {
             flag = false;
         }
         EndDrawing();
@@ -73,10 +73,6 @@ void sortControls(int& width, int& height)
     bool flag = true;
     Rectangle back{275.0, 250.0, 250,40};
     while (flag) {
-        if (height!=350) {
-            height = 350;
-            SetWindowSize(width,height);
-        }
         BeginDrawing();
         ClearBackground(WHITE);
         DrawText("R - Make a new list of unsorted values.", 20, 100, 20, BLACK);

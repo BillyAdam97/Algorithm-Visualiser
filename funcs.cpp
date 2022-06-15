@@ -547,10 +547,6 @@ void psaControls(int& width, int& height)
     bool flag = true;
     Rectangle back{275.0, 500.0, 250,40};
     while (flag) {
-        if (height != 600) {
-            height = 600;
-            SetWindowSize(width, height);
-        }
         BeginDrawing();
         ClearBackground(WHITE);
         DrawText("Left Click - Places blocks. The first two blocks will be the start (Orange)", 20, 100, 20, BLACK);
@@ -574,35 +570,34 @@ void psaControls(int& width, int& height)
 void choosePSA(int& width, int& height)
 {
     
-    SetMousePosition(100, 100);
-    Rectangle astarB{275.0, 50.0, 250,40};
-    Rectangle dijkB{275.0, 100.0, 250,40};
-    Rectangle controls{275.0, 150.0, 250,40};
-    Rectangle back{275.0, 200.0, 250,40};
+    bool click = false;
+    Rectangle astarB{(float)((width/2)-200.0), 100.0, 400,75};
+    Rectangle dijkB{(float)((width/2)-200.0), 200.0, 400,75};
+    Rectangle controls{(float)((width/2)-200.0), 300.0, 400,75};
+    Rectangle back{(float)((width/2)-200.0), 400.0, 400,75};
     bool flag = true;
     
     while (flag) {
-        if (height != 300) {
-            height = 300;
-            SetWindowSize(width, height);
-        }
         BeginDrawing();
         ClearBackground(WHITE);
-
-        if (GuiButton(astarB, "A* Algorithm")) {
-            height = 800;
-            SetWindowSize(width, height);
+        
+        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+            click = true;
+        }
+        
+        if (GuiButton(astarB, "A* Algorithm") && click) {
             start_astar(width);
+            click = false;
         }
-        else if (GuiButton(dijkB, "Dijkstras")) {
-            height = 800;
-            SetWindowSize(width, height);
+        else if (GuiButton(dijkB, "Dijkstras") && click) {
             start_dijkstra(width);
+            click = false;
         }
-        else if (GuiButton(controls, "Controls")) {
+        else if (GuiButton(controls, "Controls") && click) {
             psaControls(width, height);
+            click = false;
         }
-        else if (GuiButton(back, "Back")) {
+        else if (GuiButton(back, "Back") && click) {
             flag = false;
         }
         EndDrawing();
@@ -614,10 +609,6 @@ void caControls(int& width, int& height)
     bool flag = true;
     Rectangle back{275.0, 450.0, 250,40};
     while (flag) {
-        if (height != 550) {
-            height = 550;
-            SetWindowSize(width, height);
-        }
         BeginDrawing();
         ClearBackground(WHITE);
         DrawText("Game of Life and Wolfams", 20, 100, 30, BLACK);
@@ -637,40 +628,40 @@ void caControls(int& width, int& height)
 
 void chooseCA(int& width, int& height)
 {
-    SetMousePosition(100, 100);
-    Rectangle gol{275.0, 100.0, 250, 40};
-    Rectangle wolfamB{275.0, 150.0, 250, 40};
-    Rectangle mapGenB{275.0, 200.0, 250, 40};
-    Rectangle controls{275.0, 250.0, 250,40};
-    Rectangle back{275.0, 300.0, 250, 40};
+    //SetMousePosition(100, 100);
+    bool click = false;
+    Rectangle gol{(float)((width/2)-200.0), 100.0, 400, 75};
+    Rectangle wolfamB{(float)((width/2)-200.0), 200.0, 400, 75};
+    Rectangle mapGenB{(float)((width/2)-200.0), 300.0, 400, 75};
+    Rectangle controls{(float)((width/2)-200.0), 400.0, 400,75};
+    Rectangle back{(float)((width/2)-200.0), 500.0, 400, 75};
     
     bool flag = true;
     
     while (flag) {
-        if (height != 400) {
-            height = 400;
-            SetWindowSize(width, height);
-        }
+
         BeginDrawing();
         ClearBackground(WHITE);
         
-        if (GuiButton(gol, "Game of Life!")) {
-            height = 800;
-            SetWindowSize(width, height);
+        if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
+            click = true;
+        }
+        
+        if (GuiButton(gol, "Game of Life!") && click) {
             start_gol(width);
+            click = false;
         }
-        else if (GuiButton(wolfamB, "Wolfam's CA")) {
-            height = 800;
-            SetWindowSize(width, height);
+        else if (GuiButton(wolfamB, "Wolfam's CA") && click) {
             choose_rule(width);
+            click = false;
         }
-        else if (GuiButton(mapGenB, "Map Generation")) {
-            height = 800;
-            SetWindowSize(width, height);
+        else if (GuiButton(mapGenB, "Map Generation") && click) {
             start_MapG(width);
+            click = false;
         }
-        else if (GuiButton(controls, "Controls")) {
+        else if (GuiButton(controls, "Controls") && click) {
             caControls(width, height);
+            click = false;
         }
         else if (GuiButton(back, "Back")) {
             flag = false;
@@ -819,7 +810,8 @@ void start_rule(int width, int rule)
 
 void choose_rule(int width)
 {
-    SetMousePosition(width/2-25, width/2);
+//    SetMousePosition(width/2-25, width/2);
+    bool click = false;
     bool flag = true;
     Rectangle rule30{100.0, 100.0, 250,40};
     Rectangle rule54{400.0, 100.0, 250,40};
@@ -848,62 +840,91 @@ void choose_rule(int width)
     Rectangle rule222{100.0, 500.0, 250,40};
     Rectangle rule250{400.0, 500.0, 250,40};
     
+    Rectangle back{200.0, 600.0, 350, 40};
+    
     while (flag) {
         BeginDrawing();
         ClearBackground(WHITE);
-        if (GuiButton(rule30, "Rule 30")) {
+        
+        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+            click = true;
+        }
+        
+        if (GuiButton(rule30, "Rule 30") && click) {
             start_rule(width, 30);
+            click = false;
         }
-        else if (GuiButton(rule54, "Rule 54")) {
+        else if (GuiButton(rule54, "Rule 54") && click) {
             start_rule(width, 54);
+            click = false;
         }
-        else if (GuiButton(rule60, "Rule 60")) {
+        else if (GuiButton(rule60, "Rule 60") && click) {
             start_rule(width, 60);
+            click = false;
         }
-        else if (GuiButton(rule62, "Rule 62")) {
+        else if (GuiButton(rule62, "Rule 62") && click) {
             start_rule(width, 62);
+            click = false;
         }
-        else if (GuiButton(rule90, "Rule 90")) {
+        else if (GuiButton(rule90, "Rule 90") && click) {
             start_rule(width, 90);
+            click = false;
         }
-        else if (GuiButton(rule94, "Rule 94")) {
+        else if (GuiButton(rule94, "Rule 94") && click) {
             start_rule(width, 94);
+            click = false;
         }
-        else if (GuiButton(rule102, "Rule 102")) {
+        else if (GuiButton(rule102, "Rule 102") && click) {
             start_rule(width, 102);
+            click = false;
         }
-        else if (GuiButton(rule110, "Rule 110")) {
+        else if (GuiButton(rule110, "Rule 110") && click) {
             start_rule(width, 110);
+            click = false;
         }
-        else if (GuiButton(rule122, "Rule 122")) {
+        else if (GuiButton(rule122, "Rule 122") && click) {
             start_rule(width, 122);
+            click = false;
         }
-        else if (GuiButton(rule126, "Rule 126")) {
+        else if (GuiButton(rule126, "Rule 126") && click) {
             start_rule(width, 126);
+            click = false;
         }
-        else if (GuiButton(rule150, "Rule 150")) {
+        else if (GuiButton(rule150, "Rule 150") && click) {
             start_rule(width, 150);
+            click = false;
         }
-        else if (GuiButton(rule158, "Rule 158")) {
+        else if (GuiButton(rule158, "Rule 158") && click) {
             start_rule(width, 158);
+            click = false;
         }
-        else if (GuiButton(rule182, "Rule 182")) {
+        else if (GuiButton(rule182, "Rule 182") && click) {
             start_rule(width, 182);
+            click = false;
         }
-        else if (GuiButton(rule188, "Rule 188")) {
+        else if (GuiButton(rule188, "Rule 188") && click) {
             start_rule(width, 188);
+            click = false;
         }
-        else if (GuiButton(rule190, "Rule 190")) {
+        else if (GuiButton(rule190, "Rule 190") && click) {
             start_rule(width, 190);
+            click = false;
         }
-        else if (GuiButton(rule220, "Rule 220")) {
+        else if (GuiButton(rule220, "Rule 220") && click) {
             start_rule(width, 220);
+            click = false;
         }
-        else if (GuiButton(rule222, "Rule 222")) {
+        else if (GuiButton(rule222, "Rule 222") && click) {
             start_rule(width, 222);
+            click = false;
         }
-        else if (GuiButton(rule250, "Rule 250")) {
+        else if (GuiButton(rule250, "Rule 250") && click) {
             start_rule(width, 250);
+            click = false;
+        }
+        else if (GuiButton(back, "Back") && click) {
+            flag = false;
+            click = false;
         }
         EndDrawing();
         

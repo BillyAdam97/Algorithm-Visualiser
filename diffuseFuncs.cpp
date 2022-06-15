@@ -128,38 +128,32 @@ void start_diffuse(int width, float feed, float kill) {
 
 void diffusionChoice(int& width, int& height)
 {
-    Rectangle coral{100.0, 100.0, 250,40};
-    Rectangle mitosis{400.0, 100.0, 250,40};
-    Rectangle test{100.0, 150.0, 250,40};
-    Rectangle back{275.0, 200, 250, 40};
-
+    Rectangle coral{(float)((width/2)-200.0), 100.0, 400, 75};
+    Rectangle mitosis{(float)((width/2)-200.0), 200.0, 400, 75};
+    Rectangle test{(float)((width/2)-200.0), 300.0, 400, 75};
+    Rectangle back{(float)((width/2)-200.0), 400, 400, 75};
+    bool click = false;
     bool flag = true;
     while (flag) {
-        if (height!=300) {
-            height = 300;
-            SetWindowSize(width, height);
-        }
         
         BeginDrawing();
         ClearBackground(WHITE);
         
-        if (GuiButton(coral, "Coral")) {
-            height = 800;
-            SetWindowSize(width, height);
+        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+            click = true;
+        }
+        
+        if (GuiButton(coral, "Coral") && click) {
             start_diffuse(width, 0.055, 0.062);
         }
-        else if (GuiButton(mitosis, "Mitosis")) {
-            height = 800;
-            SetWindowSize(width, height);
+        else if (GuiButton(mitosis, "Mitosis") && click) {
             start_diffuse(width, 0.0367, 0.0649);
         }
-        else if (GuiButton(test, "test")) {
+        else if (GuiButton(test, "Coral..ish") && click) {
             //0.02, 0.058
-            height = 800;
-            SetWindowSize(width, height);
             start_diffuse(width, 0.06100, 0.06264);
         }
-        else if (GuiButton(back, "Back")) {
+        else if (GuiButton(back, "Back") && click) {
             flag = false;
         }
         EndDrawing();

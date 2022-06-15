@@ -82,6 +82,7 @@ void startLinear(int width)
 
 void binarySearch(std::vector<std::shared_ptr<Bar>>& alist, std::shared_ptr<Bar>& chosen)
 {
+    SetTargetFPS(5);
     int low = 0;
     int high = alist.size()-1;
     int mid;
@@ -99,6 +100,9 @@ void binarySearch(std::vector<std::shared_ptr<Bar>>& alist, std::shared_ptr<Bar>
         else {
             high = mid-1;
         }
+        BeginDrawing();
+        drawSorted(alist);
+        EndDrawing();
     }
 }
 
@@ -131,6 +135,7 @@ void startBinary(int width)
         }
         else if (IsKeyPressed(KEY_SPACE)) {
             binarySearch(alist, cur);
+            SetTargetFPS(60);
         }
         else if (IsKeyPressed(KEY_DELETE)) {
             flag = false;
@@ -140,36 +145,36 @@ void startBinary(int width)
 
 void chooseSearch(int& width, int& height)
 {
-    SetMousePosition(100, 100);
-    Rectangle linearB{275.0, 100.0, 250, 40};
-    Rectangle binaryB{275.0, 150.0, 250, 40};
-    Rectangle controls{275.0, 200.0, 250, 40};
-    Rectangle back{275.0, 250.0, 250, 40};
+    Rectangle linearB{(float)((width/2)-200.0), 100.0, 400, 75};
+    Rectangle binaryB{(float)((width/2)-200.0), 200.0, 400, 75};
+    Rectangle controls{(float)((width/2)-200.0), 300.0, 400, 75};
+    Rectangle back{(float)((width/2)-200.0), 400.0, 400, 75};
     
     bool flag = true;
+    bool click = false;
     
     while (flag) {
-        if (height!=350) {
-            height=350;
-            SetWindowSize(width, height);
-        }
+
         BeginDrawing();
         ClearBackground(WHITE);
         
-        if (GuiButton(linearB, "Linear Search")) {
-            height = 800;
-            SetWindowSize(width, height);
+        if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+            click = true;
+        }
+        
+        if (GuiButton(linearB, "Linear Search") && click) {
             startLinear(width);
+            click = false;
         }
-        else if (GuiButton(binaryB, "Binary Search")) {
-            height = 800;
-            SetWindowSize(width, height);
+        else if (GuiButton(binaryB, "Binary Search") && click) {
             startBinary(width);
+            click = false;
         }
-        else if (GuiButton(controls, "Controls")) {
+        else if (GuiButton(controls, "Controls") && click) {
             searchControls(width, height);
+            click = false;
         }
-        else if (GuiButton(back, "Back")) {
+        else if (GuiButton(back, "Back") && click) {
             flag = false;
         }
         EndDrawing();
@@ -181,10 +186,6 @@ void searchControls(int& width, int& height)
     bool flag = true;
     Rectangle back{275.0, 300.0, 250,40};
     while (flag) {
-        if (height!=400) {
-            height = 400;
-            SetWindowSize(width, height);
-        }
         BeginDrawing();
         ClearBackground(WHITE);
         DrawText("Left Click - Highlights the value to look for.", 20, 100, 20, BLACK);
