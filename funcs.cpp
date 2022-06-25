@@ -277,7 +277,6 @@ void start_astar(int width) {
     bool flag = true;
     bool start = false;
     bool end = false;
-    bool started = false;
     std::pair<int,int> startxy;
     std::pair<int,int> endxy;
     std::pair<int,int> rowcol;

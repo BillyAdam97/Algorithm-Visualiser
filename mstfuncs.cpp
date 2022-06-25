@@ -1,6 +1,5 @@
 #include "mstfuncs.hpp"
 #include "raygui.h"
-#include <iostream>
 
 void drawGraph(std::vector<std::shared_ptr<Node>>& nodes)
 {
@@ -47,7 +46,6 @@ void mst(std::vector<std::shared_ptr<Node>>& nodes, std::vector<float>& key, std
         u = minKey(key, mstSet);
         
         mstSet[u] = true;
-//        nodes[u]->setVisited();
         
         for (int i=0; i<nodes[u]->edges.size(); i++) {
             if (mstSet[nodes[u]->edges[i].first->ind] == false && nodes[u]->edges[i].second<key[nodes[u]->edges[i].first->ind]) {
@@ -104,14 +102,6 @@ void bfs(std::vector<std::shared_ptr<Node>>& nodes) {
         BeginDrawing();
         ClearBackground(WHITE);
         drawGraph(nodes);
-        int k = 100;
-        for (int i=1; i<parent.size(); i++) {
-            std::string a = std::to_string(parent[i]);
-            a+= " ---> ";
-            a+= std::to_string(i);
-            DrawText(a.c_str(), 500, k, 20, BLACK);
-            k+=100;
-        }
         EndDrawing();
     }
     
@@ -139,7 +129,6 @@ void dfs(std::vector<std::shared_ptr<Node>>& nodes)
                 stk.push(temp->edges[i].first);
                 instk.emplace_back(temp->edges[i].first->ind);
                 parent[temp->edges[i].first->ind] = temp->ind;
-//                temp->edges[i].first->setVisited();
             }
         }
         BeginDrawing();
@@ -151,18 +140,12 @@ void dfs(std::vector<std::shared_ptr<Node>>& nodes)
         BeginDrawing();
         ClearBackground(WHITE);
         drawGraph(nodes);
-        int k = 100;
-        for (int i=1; i<parent.size(); i++) {
-            std::string a = std::to_string(parent[i]);
-            a+= " ---> ";
-            a+= std::to_string(i);
-            DrawText(a.c_str(), 500, k, 20, BLACK);
-            k+=100;
-        }
         EndDrawing();
     }
     SetTargetFPS(60);
 }
+
+
 
 void start_prims()
 {
@@ -521,3 +504,4 @@ void mstControls(int& width, int& height)
         EndDrawing();
     }
 }
+

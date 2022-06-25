@@ -34,4 +34,8 @@ void start_merge();
 void selectionSort(std::vector<std::shared_ptr<Bar>>& alist);
 void start_selection();
 
+//Heap Sort
+void heapify(std::vector<std::shared_ptr<Bar>>& alist, int size, int ind);
+void heapSort(std::vector<std::shared_ptr<Bar>>& alist, int size);
+void start_heapSort();
 #endif /* sortingFuncs_hpp */

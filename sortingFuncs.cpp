@@ -1,5 +1,6 @@
 #include "sortingFuncs.hpp"
 #include "raygui.h"
+#include <iostream>
 
 std::vector<std::shared_ptr<Bar>> make_list(int columns, int width, int height) {
     std::vector<std::shared_ptr<Bar>> alist;
@@ -27,8 +28,9 @@ void chooseSort(int& width, int& height)
     Rectangle quickB{(float)((width/2)-200.0), 200.0, 400, 75};
     Rectangle mergeB{(float)((width/2)-200.0), 300.0, 400, 75};
     Rectangle selectionB{(float)((width/2)-200.0), 400.0, 400,75};
-    Rectangle controls{(float)((width/2)-200.0), 500.0, 400, 75};
-    Rectangle back{(float)((width/2)-200.0), 600.0, 400, 75};
+    Rectangle heapB{(float)((width/2)-200.0), 500.0, 400, 75};
+    Rectangle controls{(float)((width/2)-200.0), 600.0, 400, 75};
+    Rectangle back{(float)((width/2)-200.0), 700.0, 400, 75};
     
     bool flag = true;
     
@@ -55,6 +57,10 @@ void chooseSort(int& width, int& height)
         }
         else if (GuiButton(selectionB, "Selection Sort") && click) {
             start_selection();
+            click = false;
+        }
+        else if (GuiButton(heapB, "Heap Sort") && click) {
+            start_heapSort();
             click = false;
         }
         else if (GuiButton(controls, "Controls") && click) {
@@ -96,6 +102,7 @@ void bubblesort(std::vector<std::shared_ptr<Bar>>& alist) {
                 alist[j+1]->x = temp;
                 swap(alist[j], alist[j+1]);
                 BeginDrawing();
+                ClearBackground(WHITE);
                 drawBars(alist);
                 EndDrawing();
             }
@@ -109,6 +116,7 @@ void start_bubble() {
     std::vector<std::shared_ptr<Bar>> alist = make_list(50, 800, 800);
     while (flag) {
         BeginDrawing();
+        ClearBackground(WHITE);
         drawBars(alist);
         EndDrawing();
         
@@ -152,6 +160,7 @@ int partition(std::vector<std::shared_ptr<Bar>>& alist, int low, int high) {
             swap(alist[j], alist[i]);
             i++;
             BeginDrawing();
+            ClearBackground(WHITE);
             drawBars(alist);
             EndDrawing();
         }
@@ -180,6 +189,7 @@ void start_quicksort() {
             for (int i=0; i<alist.size(); i++) {
                 alist[i]->setSorted();
                 BeginDrawing();
+                ClearBackground(WHITE);
                 drawBars(alist);
                 EndDrawing();
             }
@@ -199,7 +209,6 @@ void merge(std::vector<std::shared_ptr<Bar>>& alist, int begin, int mid, int end
     std::vector<std::shared_ptr<Bar>> subtwo;
     for (int i=0; i<subonesize; i++) {
         subone.emplace_back(std::make_shared<Bar>(alist[begin+i]->row,alist[begin+i]->col,alist[begin+i]->width,alist[begin+i]->height));
-        //subone[i]=alist[begin+i];
     }
     for (int j=0; j<subtwosize; j++) {
         subtwo.emplace_back(std::make_shared<Bar>(alist[mid+1+j]->row,alist[mid+1+j]->col,alist[mid+1+j]->width,alist[mid+1+j]->height));
@@ -226,6 +235,7 @@ void merge(std::vector<std::shared_ptr<Bar>>& alist, int begin, int mid, int end
         }
         mergedIndex++;
         BeginDrawing();
+        ClearBackground(WHITE);
         drawBars(alist);
         EndDrawing();
 
@@ -239,6 +249,7 @@ void merge(std::vector<std::shared_ptr<Bar>>& alist, int begin, int mid, int end
         suboneIndex++;
         mergedIndex++;
         BeginDrawing();
+        ClearBackground(WHITE);
         drawBars(alist);
         EndDrawing();
     }
@@ -251,6 +262,7 @@ void merge(std::vector<std::shared_ptr<Bar>>& alist, int begin, int mid, int end
         subtwoIndex++;
         mergedIndex++;
         BeginDrawing();
+        ClearBackground(WHITE);
         drawBars(alist);
         EndDrawing();
     }
@@ -287,6 +299,7 @@ void start_merge() {
             for (int i=0; i<alist.size(); i++) {
                 alist[i]->setSorted();
                 BeginDrawing();
+                ClearBackground(WHITE);
                 drawBars(alist);
                 EndDrawing();
             }
@@ -314,6 +327,7 @@ void selectionSort(std::vector<std::shared_ptr<Bar>>& alist)
         alist[i]->x = temp;
         swap(alist[n],alist[i]);
         BeginDrawing();
+        ClearBackground(WHITE);
         drawBars(alist);
         EndDrawing();
     }
@@ -337,6 +351,7 @@ void start_selection()
             for (int i=0; i<alist.size(); i++) {
                 alist[i]->setSorted();
                 BeginDrawing();
+                ClearBackground(WHITE);
                 drawBars(alist);
                 EndDrawing();
             }
@@ -345,5 +360,79 @@ void start_selection()
             flag = false;
         }
         
+    }
+}
+
+void heapify(std::vector<std::shared_ptr<Bar>>& alist, int size, int ind) {
+    int temp;
+    int larger = ind;
+    int left = 2*ind+1;
+    int right = 2*ind+2;
+    
+    if (left<size && alist[left]->height > alist[larger]->height) {
+        larger = left;
+    }
+    
+    if (right<size && alist[right]->height > alist[larger]->height) {
+        larger = right;
+    }
+    
+    if (larger!=ind) {
+        temp = alist[larger]->x;
+        alist[larger]->x = alist[ind]->x;
+        alist[ind]->x = temp;
+        swap(alist[larger], alist[ind]);
+        heapify(alist, size, larger);
+        BeginDrawing();
+        ClearBackground(WHITE);
+        drawBars(alist);
+        EndDrawing();
+    }
+    
+}
+
+void heapSort(std::vector<std::shared_ptr<Bar>>& alist, int size) {
+
+    int temp;
+    
+    for (int i=size/2-1; i>=0; i--) {
+        heapify(alist, size, i);
+    }
+    
+    for (int i=size-1; i>=1; i--) {
+        temp = alist[0]->x;
+        alist[0]->x = alist[i]->x;
+        alist[i]->x = temp;
+        swap(alist[0], alist[i]);
+        heapify(alist, i, 0);
+    }
+    
+}
+
+void start_heapSort() {
+    std::vector<std::shared_ptr<Bar>> alist = make_list(100, 800, 800);
+    bool flag = true;
+
+    while (flag) {
+        BeginDrawing();
+        drawBars(alist);
+        EndDrawing();
+
+        if (IsKeyPressed(KEY_R)) {
+            alist = make_list(100, 800, 800);
+        }
+        else if (IsKeyPressed(KEY_SPACE)) {
+            heapSort(alist, alist.size());
+            for (int i=0; i<alist.size(); i++) {
+                alist[i]->setSorted();
+                BeginDrawing();
+                drawBars(alist);
+                EndDrawing();
+            }
+        }
+        else if (IsKeyPressed(KEY_DELETE)) {
+            flag = false;
+        }
+
     }
 }
