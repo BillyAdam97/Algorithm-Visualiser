@@ -45,6 +45,9 @@ bool algorithm(std::vector<std::vector<std::shared_ptr<Square>>>& grid, std::sha
 void start_dijkstra(int width);
 bool dijkstras(std::vector<std::vector<std::shared_ptr<Square>>>& grid, std::shared_ptr<Square> start, std::shared_ptr<Square> end);
 
+//BucketFill
+void start_bucket(int width);
+void bucketFill(std::vector<std::vector<std::shared_ptr<Square>>>& grid, int x, int y, Color pc, std::string pct ,Color nc, std::string nct);
 
 //Game of Life
 void start_gol(int width);

@@ -91,6 +91,8 @@ void bfs(std::vector<std::shared_ptr<Node>>& nodes) {
                 Q.push(temp->edges[i].first);
                 parent[temp->edges[i].first->ind] = temp->ind;
                 temp->edges[i].first->setVisited();
+                temp->edges[i].first->lineColor[temp->ind] = GREEN;
+                temp->lineColor[temp->edges[i].first->ind] = GREEN;
             }
         }
         BeginDrawing();
@@ -129,6 +131,9 @@ void dfs(std::vector<std::shared_ptr<Node>>& nodes)
                 stk.push(temp->edges[i].first);
                 instk.emplace_back(temp->edges[i].first->ind);
                 parent[temp->edges[i].first->ind] = temp->ind;
+                temp->edges[i].first->setVisited();
+                temp->edges[i].first->lineColor[temp->ind] = GREEN;
+                temp->lineColor[temp->edges[i].first->ind] = GREEN;
             }
         }
         BeginDrawing();

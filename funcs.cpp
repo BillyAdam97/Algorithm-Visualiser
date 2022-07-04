@@ -541,6 +541,172 @@ void start_dijkstra(int width) {
     }
 }
 
+void bucketFill(std::vector<std::vector<std::shared_ptr<Square>>>& grid, int x, int y, Color pc, std::string pct, Color nc, std::string nct)
+{
+//    std::queue<std::pair<int,int>> q;
+//    std::shared_ptr<Square> temp;
+//    std::string startcol = start->colortype;
+//    q.push({start->row, start->col});
+//
+//    while (!q.empty()) {
+//        temp = grid[q.front().first][q.front().second];
+//        q.pop();
+//        temp->setColor(c, ct);
+//        temp->processed = true;
+//
+//        for (int i=0; i<temp->neigbours.size(); i++) {
+//            if (temp->neigbours[i]->colortype == startcol) {
+//                q.push({temp->neigbours[i]->row,temp->neigbours[i]->col});
+//            }
+//        }
+//      }
+    if (x<0 || x>=grid.size() || y<0 || y>=grid[0].size()) {
+        return;
+    }
+    if (grid[x][y]->colortype != pct) {
+        return;
+    }
+    if (grid[x][y]->colortype == nct) {
+        return;
+    }
+    
+    grid[x][y]->color = nc;
+    grid[x][y]->colortype = nct;
+    
+    BeginDrawing();
+    draw(grid, grid.size(), 800);
+    EndDrawing();
+    
+    bucketFill(grid, x+1, y, pc, pct, nc, nct);
+    bucketFill(grid, x-1, y, pc, pct, nc, nct);
+    bucketFill(grid, x, y+1, pc, pct, nc, nct);
+    bucketFill(grid, x, y-1, pc, pct, nc, nct);
+
+}
+
+void start_bucket(int width) {
+
+    bool out = false;
+    bool in = true;
+    bool flag = true;
+    int rows = 40;
+    std::vector<std::pair<Color,std::string>> colors {{BLACK, "BLACk"}, {WHITE, "WHITE"}, {BLUE,"BLUE"}, {RED, "RED"}, {GREEN, "GREEN"},
+        {ORANGE, "ORANGE"}, {PURPLE, "PURPLE"}, {LIGHTGRAY, "LIGHTGRAY"}, {GRAY, "GRAY"}, {DARKGRAY, "DARKGRAY"}, {YELLOW, "YELLOW"},
+        {GOLD, "GOLD"}, {PINK, "PINK"}, {MAROON, "MAROON"}, {LIME, "LIME"}, {DARKGREEN, "DARKGREEN"}, {SKYBLUE, "SKYBLUE"},
+        {DARKBLUE, "DARKBLUE"}, {VIOLET, "VIOLET"}, {DARKPURPLE, "DARKPURPLE"}, {BEIGE, "BEIGE"}, {BROWN, "BROWN"}, {DARKBROWN, "DARKBROWN"}};
+    int colorind = 0;
+    std::vector<std::vector<std::shared_ptr<Square>>> grid = make_Squares(rows, width);
+    Vector2 mousepos = { 0.0f, 0.0f };
+    int radius = 10;
+    Color circlec = colors[colorind].first;
+    std::string ct = colors[colorind].second;
+    int row;
+    int col;
+    bool start = false;
+    std::pair<int,int> rowcol;
+    std::shared_ptr<Square> startnode = nullptr;
+    HideCursor();
+    char mode = 'w';
+    
+    while (flag) {
+        
+        mousepos = GetMousePosition();
+        
+        BeginDrawing();
+        draw(grid, rows, width);
+        DrawCircleV(mousepos, radius, circlec);
+        EndDrawing();
+        
+        if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
+            mousepos = GetMousePosition();
+            correct_bound(mousepos, width, width);
+            rowcol = get_clicked(mousepos, rows, width);
+            row = rowcol.first;
+            col = rowcol.second;
+            
+            switch(mode) {
+                case 'w':
+                    grid[col][row]->setColor(circlec,ct);
+                    break;
+                case 'f':
+                    startnode = grid[col][row];
+                    for (int i=0; i<grid.size(); i++) {
+                        for (int j=0; j<grid[0].size(); j++) {
+                            grid[i][j]->updateNeighbours(grid);
+                        }
+                    }
+                    bucketFill(grid, startnode->row, startnode->col, startnode->color, startnode->colortype, circlec, ct);
+                    break;
+            }
+        }
+        else if (IsMouseButtonDown(MOUSE_BUTTON_RIGHT)) {
+            mousepos = GetMousePosition();
+            correct_bound(mousepos, width, width);
+            rowcol = get_clicked(mousepos, rows,width);
+            row = rowcol.first;
+            col = rowcol.second;
+            grid[col][row]->reset();
+        }
+        
+        if (IsKeyPressed(KEY_DELETE)) {
+            flag = false;
+        }
+        else if (IsKeyPressed(KEY_R)) {
+            grid = make_Squares(rows, width);
+            startnode = nullptr;
+            start = false;
+        }
+        else if (IsKeyPressed(KEY_RIGHT)) {
+            if (colorind + 1 >= colors.size()) {
+                colorind = 0;
+            }
+            else {
+                colorind++;
+            }
+            circlec = colors[colorind].first;
+            ct = colors[colorind].second;
+        }
+        else if (IsKeyPressed(KEY_LEFT)) {
+            if (colorind - 1 < 0) {
+                colorind = colors.size()-1;
+            }
+            else {
+                colorind--;
+            }
+            circlec = colors[colorind].first;
+            ct = colors[colorind].second;
+        }
+        else if (IsKeyPressed(KEY_ENTER)) {
+            if (mode == 'w') {
+                mode = 'f';
+            }
+            else {
+                mode = 'w';
+            }
+        }
+        else if (IsKeyPressed(KEY_EQUAL)) {
+            if (!out) {
+                rows += 40;
+                grid = make_Squares(rows, width);
+                startnode = nullptr;
+                start = false;
+                out = true;
+                in = false;
+            }
+        }
+        else if (IsKeyPressed(KEY_MINUS)) {
+            if (!in) {
+                rows -= 40;
+                grid = make_Squares(rows, width);
+                startnode = nullptr;
+                start = false;
+                in = true;
+                out = false;
+            }
+        }
+    }
+}
+
 void psaControls(int& width, int& height)
 {
     bool flag = true;
@@ -572,8 +738,9 @@ void choosePSA(int& width, int& height)
     bool click = false;
     Rectangle astarB{(float)((width/2)-200.0), 100.0, 400,75};
     Rectangle dijkB{(float)((width/2)-200.0), 200.0, 400,75};
-    Rectangle controls{(float)((width/2)-200.0), 300.0, 400,75};
-    Rectangle back{(float)((width/2)-200.0), 400.0, 400,75};
+    Rectangle bucketB{(float)((width/2)-200.0), 300.0, 400,75};
+    Rectangle controls{(float)((width/2)-200.0), 400.0, 400,75};
+    Rectangle back{(float)((width/2)-200.0), 500.0, 400,75};
     bool flag = true;
     
     while (flag) {
@@ -590,6 +757,10 @@ void choosePSA(int& width, int& height)
         }
         else if (GuiButton(dijkB, "Dijkstras") && click) {
             start_dijkstra(width);
+            click = false;
+        }
+        else if (GuiButton(bucketB, "BucketFill") && click) {
+            start_bucket(width);
             click = false;
         }
         else if (GuiButton(controls, "Controls") && click) {

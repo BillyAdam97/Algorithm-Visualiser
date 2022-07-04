@@ -15,6 +15,7 @@ public:
     int total_rows;
     int index;
     std::vector<std::shared_ptr<Square>> neigbours;
+    bool processed;
     
     //Methods
     
@@ -30,6 +31,7 @@ public:
     void setStart();
     void setEnd();
     void setPath();
+    void setColor(Color c, std::string ct);
     
     virtual void draw() override;
     void updateNeighbours(std::vector<std::vector<std::shared_ptr<Square>>>& grid);

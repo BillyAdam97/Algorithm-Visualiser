@@ -4,6 +4,7 @@
 Square::Square(int _row, int _col, int _width, int _total_rows, int _index)
 : Shape(_row,_col,_width,_width), total_rows{_total_rows}, index{_index}
 {
+    processed = false;
 }
 
 Square::~Square() {}
@@ -74,6 +75,11 @@ void Square::setPath()
 {
     colortype = "PURPLE";
     color = PURPLE;
+}
+
+void Square::setColor(Color c, std::string ct) {
+    colortype = ct;
+    color = c;
 }
 
 void Square::draw()
