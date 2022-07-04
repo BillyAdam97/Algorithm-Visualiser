@@ -16,3 +16,8 @@ Currently implemented:
 - Map Generator
 - Reaction Diffusion
 - Prims Minimal Spanning Tree
+- Breadth First Search
+- Depth First Search
+- Heap Sort
+- BucketFill
+
